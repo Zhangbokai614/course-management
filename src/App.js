@@ -42,7 +42,8 @@ const App = () => {
           />
           <Content
             style={{
-              margin: '0 16px',
+              margin: '0 0px',
+              padding: '0 0px'
             }}
           >
             {routers[currentPage]}
