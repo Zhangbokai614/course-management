@@ -74,7 +74,7 @@ const ArticleListPage = () => {
   }
 
   function changeCategory(e) {
-    let t = parseInt(e.target.getAttribute('value'))
+    let t = parseInt(e.target.getAttribute('value'));
     if (t === currentCategorIndexState) {
       console.log('same');
     } else {
@@ -119,11 +119,11 @@ const ArticleListPage = () => {
         <div id='contentBox' onScroll={() => {
           let e = document.getElementById('contentBox');
           if ((e.scrollHeight >= e.clientHeight ? true : false) && (e.scrollHeight - e.scrollTop === e.clientHeight)) {
-            console.log('update')
+            console.log('update');
           }
         }}>
           {
-            currentCategorIndexState == -1 ? (
+            currentCategorIndexState === -1 ? (
               articleList.map((v) => {
                 return v.map((vv) => {
                   return (
@@ -134,7 +134,7 @@ const ArticleListPage = () => {
                       littleTitle={vv.littleTitle}
                       articleUrl={vv.articleUrl}
                     />
-                  )
+                  );
                 })
               })) : articleList[currentCategorIndexState].map((v) => {
                 return (
@@ -145,13 +145,13 @@ const ArticleListPage = () => {
                     littleTitle={v.littleTitle}
                     articleUrl={v.articleUrl}
                   />
-                )
+                );
               })
           }
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default ArticleListPage;

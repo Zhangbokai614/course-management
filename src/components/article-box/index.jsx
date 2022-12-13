@@ -3,7 +3,7 @@ import { Placeholder } from '../placeholder';
 export const ArticleBox = (props) => (
   <div className={props.className}>
     <div style={{ height: '140px', width: '100%' }}>
-      <img src={props.img} style={{ height: '100%', width: '100%' }} />
+      <img src={props.img} alt="" style={{ height: '100%', width: '100%' }} />
     </div>
 
     <div style={{ height: '72px', width: '100%', whiteSpace: 'nowrap' }}>
