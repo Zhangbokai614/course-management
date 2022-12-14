@@ -136,7 +136,7 @@ const ArticleListPage = () => {
                     />
                   );
                 })
-              })) : articleList[currentCategorIndexState].map((v) => {
+              })) : articleList.length > currentCategorIndexState ? articleList[currentCategorIndexState].map((v) => {
                 return (
                   <ArticleBox
                     className={'itemContent'}
@@ -146,7 +146,7 @@ const ArticleListPage = () => {
                     articleUrl={v.articleUrl}
                   />
                 );
-              })
+              }) : <></>
           }
         </div>
       </div>
