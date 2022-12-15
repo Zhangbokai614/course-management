@@ -3,11 +3,12 @@ import { Layout, Menu, Image, ConfigProvider } from 'antd';
 
 import { routers, menuItems } from './routers';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const App = () => {
+  const defaultPage = 'Home'
   const [collapsed, setCollapsed] = useState(false);
-  const [currentPage, setCurrentPage] = useState('Home')
+  const [currentPage, setCurrentPage] = useState(defaultPage)
 
   const switchPage = (value) => {
     setCurrentPage(value)
@@ -17,7 +18,6 @@ const App = () => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#00b96b',
         },
       }}
     >
@@ -30,31 +30,27 @@ const App = () => {
           <Image
             width={50}
             src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
+            height={'6vh'}
           />
-          <Menu theme="dark" defaultSelectedKeys={['Home']} mode="vertical" items={menuItems} onClick={(item) => { switchPage(item.key) }} />
+          <Menu theme="dark" defaultSelectedKeys={[defaultPage]} mode="vertical" items={menuItems} onClick={(item) => { switchPage(item.key) }} />
         </Sider>
         <Layout className="site-layout">
           <Header
             className="site-layout-background"
             style={{
               padding: 0,
+              height: '5vh'
             }}
           />
           <Content
             style={{
               margin: '0 0px',
-              padding: '0 0px'
+              padding: '0 0px',
+              backgroundColor: '#F0F2F5'
             }}
           >
             {routers[currentPage]}
           </Content>
-          <Footer
-            style={{
-              textAlign: 'center',
-            }}
-          >
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
         </Layout>
       </Layout>
     </ConfigProvider>
