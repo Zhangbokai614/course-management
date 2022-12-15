@@ -1,0 +1,81 @@
+.codeing-root {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 92vh;
+    margin-left: 0.8vw;
+    margin-right: 0.8vw;
+    margin-top: 1.2vh;
+    margin-bottom: 1.2vh;
+    padding-left: 0.8vw;
+    padding-right: 0.8vw;
+    padding-top: 1.2vh;
+    padding-bottom: 1.2vh;
+    background-color: #F5F5F5;
+}
+
+.editer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 67.8vw;
+    height: 100%;
+    margin-right: 0.35vw;
+}
+
+.editer-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 0.8vw;
+    padding-right: 0.8vw;
+    padding-top: 1.2vh;
+    padding-bottom: 1.2vh;
+}
+
+.editer-body {
+    background-color: #FFFFFF;
+    height: 100%;
+    padding-left: 0.8vw;
+    padding-right: 0.8vw;
+    padding-top: 1.66vh;
+    padding-bottom: 1.66vh;
+}
+
+.output {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 23.8vw;
+    height: 100%;
+    margin-left: 0.35vw;
+}
+
+.stdin-text {
+    padding-left: 0.8vw;
+    padding-right: 0.8vw;
+    padding-top: 1.2vh;
+    padding-bottom: 1.2vh;
+}
+
+.stdin {
+    background-color: #FFFFFF;
+    height: 9.8vh;
+}
+
+.compler {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.stdout {
+    background-color: #FFFFFF;
+    height: 58vh;
+}
+
+
+.info {
+    background-color: #FFFFFF;
+    height: 6.66vh;
+}
