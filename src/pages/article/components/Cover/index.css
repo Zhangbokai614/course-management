@@ -1,0 +1,50 @@
+.Cover-Container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.Cover-Container-middle{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    width: calc(100% - 16px * 2);
+    background-color: white;
+}
+
+.Cover-title{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    /* font-weight: bold; */
+    font-size: x-large;
+}
+
+.Cover-author{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-bottom: calc(8px * 6);
+    font-size: small;
+    color: #989797;
+}
+
+.Cover-straight-matter{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+}
+
+.Cover-text{
+    width: calc(100% - 8px * 32);
+}
+
+.Cover-paragraph{
+    text-indent: 2em;
+    font-size: 16px;
+    margin-bottom: 32px;
+}

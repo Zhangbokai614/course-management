@@ -1,11 +1,13 @@
-import React from 'react';
-import { Button } from 'antd';
-import 'antd/dist/reset.css';
+import React from "react"
+import "antd/dist/reset.css"
+import Article from "./components/Article"
+import Cover from "./components/Cover"
 
 const ArticlePage = () => (
-    <div className="App">
-      <Button  type="primary">article</Button>
-    </div>
-);
+  <div className="App">
+    <Article></Article>
+    <Cover></Cover>
+  </div>
+)
 
-export default ArticlePage;
+export default ArticlePage

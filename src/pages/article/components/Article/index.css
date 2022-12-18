@@ -1,0 +1,13 @@
+.Article-Container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.Article-Container-middle{
+    display: flex;
+    width: calc(100% - 16px * 2);
+    height: 50vh;
+    background-image: url('./image.png');
+    background-size:cover
+}
