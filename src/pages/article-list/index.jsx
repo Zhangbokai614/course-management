@@ -118,7 +118,7 @@ const ArticleListPage = () => {
       <div style={{ flexGrow: '1', margin: '0 25px' }}>
         <div id='contentBox' onScroll={() => {
           let e = document.getElementById('contentBox');
-          if ((e.scrollHeight >= e.clientHeight ? true : false) && (e.scrollHeight - e.scrollTop === e.clientHeight)) {
+          if (Math.abs(e.scrollHeight - e.clientHeight - e.scrollTop) < 1) {
             console.log('update');
           }
         }}>
