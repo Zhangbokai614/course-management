@@ -110,7 +110,7 @@ const ArticleListPage = () => {
           })}
         </div>
 
-        <div onClick={changeShowHidden} style={{ color: token.colorPrimary, marginRight: '40px', height: '72px', lineHeight: '72px', whiteSpace: 'nowrap' }} >{allCategorsState === 'hidden' ? '展开' : '收起'}&nbsp;{allCategorsState === 'hidden' ? <DownOutlined /> : <UpOutlined />}</div>
+        <div onClick={changeShowHidden} style={{ marginLeft: 'auto', color: token.colorPrimary, marginRight: '40px', height: '72px', lineHeight: '72px', whiteSpace: 'nowrap' }} >{allCategorsState === 'hidden' ? '展开' : '收起'}&nbsp;{allCategorsState === 'hidden' ? <DownOutlined /> : <UpOutlined />}</div>
       </div>
 
       <Placeholder height='24px' display='block' />
