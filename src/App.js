@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Image, ConfigProvider } from 'antd';
+import { Layout, Menu, Image, ConfigProvider, theme } from 'antd';
 
 import { routers, menuItems } from './routers';
 
 const { Header, Content, Sider } = Layout;
+const { useToken } = theme;
 
 const App = () => {
   const defaultPage = 'Home'
+  const { token } = useToken();
   const [collapsed, setCollapsed] = useState(false);
   const [currentPage, setCurrentPage] = useState(defaultPage)
 
@@ -26,20 +28,28 @@ const App = () => {
           minHeight: '100vh',
         }}
       >
-        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        <Sider
+          style={{
+            paddingTop: '0.4vh'
+          }}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+        >
           <Image
-            width={50}
             src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
-            height={'6vh'}
+            height='4.6vh'
+            width='100%'
           />
           <Menu theme="dark" defaultSelectedKeys={[defaultPage]} mode="vertical" items={menuItems} onClick={(item) => { switchPage(item.key) }} />
         </Sider>
         <Layout className="site-layout">
           <Header
-            className="site-layout-background"
             style={{
               padding: 0,
-              height: '5vh'
+              height: '5vh',
+              background: token.colorBgContainer,
+              boxShadow: token.boxShadow,
             }}
           />
           <Content
