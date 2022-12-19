@@ -1,4 +1,9 @@
+:root {
+    --radius: 6px;
+}
+
 .codeing-root {
+    border-radius: var(--radius);
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -14,7 +19,8 @@
     background-color: #F5F5F5;
 }
 
-.editer {
+.editor {
+    border-radius: var(--radius);
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -23,20 +29,41 @@
     margin-right: 0.35vw;
 }
 
-.editer-header {
+.header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-left: 0.8vw;
+    align-content: center;
+    height: 6vh;
+    padding-left: 0.2vw;
     padding-right: 0.8vw;
     padding-top: 1.2vh;
     padding-bottom: 1.2vh;
 }
 
-.editer-body {
+.text {
+    margin-top: auto;
+    margin-bottom: auto;
+    /* margin-right: 2vw; */
+    height: 3.2vh;
+    line-height: 3.2vh;
+    overflow: hidden;
+}
+
+.select-label {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.select-label-text {
+    margin-left: 1.2vw;
+}
+
+.editor-body {
+    border-radius: var(--radius);
     background-color: #FFFFFF;
     height: 100%;
-    padding-left: 0.8vw;
     padding-right: 0.8vw;
     padding-top: 1.66vh;
     padding-bottom: 1.66vh;
@@ -51,31 +78,32 @@
     margin-left: 0.35vw;
 }
 
-.stdin-text {
-    padding-left: 0.8vw;
+.compler {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    height: 6.2vh;
+    padding-left: 0.2vw;
     padding-right: 0.8vw;
     padding-top: 1.2vh;
     padding-bottom: 1.2vh;
 }
 
 .stdin {
+    border-radius: var(--radius);
     background-color: #FFFFFF;
-    height: 9.8vh;
-}
-
-.compler {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    height: 10vh;
 }
 
 .stdout {
+    border-radius: var(--radius);
     background-color: #FFFFFF;
     height: 58vh;
 }
 
-
 .info {
+    border-radius: var(--radius);
     background-color: #FFFFFF;
     height: 6.66vh;
 }
