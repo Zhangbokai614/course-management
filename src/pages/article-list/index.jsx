@@ -104,9 +104,9 @@ const ArticleListPage = () => {
         <div style={{ fontWeight: 'bold', margin: '0 40px', height: '72px', lineHeight: '72px', whiteSpace: 'nowrap' }}>所属类目:</div>
 
         <div id='radioButtonGroup' className={allCategorsState}>
-          <div onClick={changeCategory} value={-1} className='itemCategory' style={{ backgroundColor: currentCategorIndexState === -1 ? token.colorPrimary : 'white' }}>&nbsp;{`全部`}&nbsp;</div>
+          <div onClick={changeCategory} value={-1} className='itemCategory' style={{ backgroundColor: currentCategorIndexState === -1 ? token.colorPrimary : 'white', color: currentCategorIndexState === -1 ? 'white' : 'black' }}>&nbsp;{`全部`}&nbsp;</div>
           {categorys.map((v, i) => {
-            return <div onClick={changeCategory} value={i} className='itemCategory' style={{ backgroundColor: currentCategorIndexState === i ? token.colorPrimary : 'white' }}>&nbsp;{v}&nbsp;</div>;
+            return <div onClick={changeCategory} value={i} className='itemCategory' style={{ backgroundColor: currentCategorIndexState === i ? token.colorPrimary : 'white', color: currentCategorIndexState === i ? 'white' : 'black' }}>&nbsp;{v}&nbsp;</div>;
           })}
         </div>
 
