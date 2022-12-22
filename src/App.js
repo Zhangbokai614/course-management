@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Image, ConfigProvider, theme } from 'antd';
+import { Layout, Menu, Image, ConfigProvider, theme, Switch, Avatar, Space } from 'antd';
+import { UserOutlined, GlobalOutlined, SearchOutlined } from '@ant-design/icons';
+
+import 'antd/dist/reset.css';
+import './App.css'
 
 import { routers, menuItems } from './routers';
 
@@ -45,18 +49,32 @@ const App = () => {
         </Sider>
         <Layout className="site-layout">
           <Header
+            className='layout-header'
             style={{
               padding: 0,
               height: '5vh',
               background: token.colorBgContainer,
               boxShadow: token.boxShadow,
+              zIndex: 10,
             }}
-          />
+          >
+            <Space size={16} align={'center'}>
+              <SearchOutlined />
+              <Switch defaultChecked />
+              <Space size={8} align={'center'}>
+                <Avatar size="small" icon={<UserOutlined />} />
+                <div>User</div>
+              </Space>
+              <GlobalOutlined />
+              <div/>
+            </Space>
+          </Header>
           <Content
             style={{
               margin: '0 0px',
               padding: '0 0px',
-              backgroundColor: '#F0F2F5'
+              backgroundColor: token.colorFillTertiary,
+              zIndex: 5,
             }}
           >
             {routers[currentPage]}
