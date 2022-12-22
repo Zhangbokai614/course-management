@@ -1,9 +1,4 @@
-:root {
-    --radius: 6px;
-}
-
 .codeing-root {
-    border-radius: var(--radius);
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -16,11 +11,9 @@
     padding-right: 0.8vw;
     padding-top: 1.2vh;
     padding-bottom: 1.2vh;
-    background-color: #F5F5F5;
 }
 
 .editor {
-    border-radius: var(--radius);
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -44,7 +37,6 @@
 .text {
     margin-top: auto;
     margin-bottom: auto;
-    /* margin-right: 2vw; */
     height: 3.2vh;
     line-height: 3.2vh;
     overflow: hidden;
@@ -61,8 +53,6 @@
 }
 
 .editor-body {
-    border-radius: var(--radius);
-    background-color: #FFFFFF;
     height: 100%;
     padding-right: 0.8vw;
     padding-top: 1.66vh;
@@ -91,19 +81,13 @@
 }
 
 .stdin {
-    border-radius: var(--radius);
-    background-color: #FFFFFF;
     height: 10vh;
 }
 
 .stdout {
-    border-radius: var(--radius);
-    background-color: #FFFFFF;
     height: 58vh;
 }
 
 .info {
-    border-radius: var(--radius);
-    background-color: #FFFFFF;
     height: 6.66vh;
 }
