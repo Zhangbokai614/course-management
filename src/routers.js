@@ -1,9 +1,9 @@
 import {
-    DesktopOutlined,
-    FileOutlined,
-    PieChartOutlined,
-    TeamOutlined,
-    UserOutlined,
+    HomeOutlined,
+    FormOutlined,
+    ReadOutlined,
+    CodeOutlined,
+    LineOutlined,
 } from '@ant-design/icons';
 
 import HomePage from './pages/home';
@@ -32,12 +32,12 @@ const routers = {
 }
 
 const menuItems = [
-    getItem('Home', 'Home', <PieChartOutlined />),
-    getItem('CourseList', 'CourseList', <DesktopOutlined />),
-    getItem('Course', 'Course', <UserOutlined />),
-    getItem('Codeing', 'Codeing', <TeamOutlined />),
-    getItem('Article', 'Article', <FileOutlined />),
-    getItem('ArticleList', 'ArticleList', <FileOutlined />),
+    getItem('Home', 'Home', <HomeOutlined />),
+    getItem('CourseList', 'CourseList', <FormOutlined />),
+    getItem('ArticleList', 'ArticleList', <ReadOutlined />),
+    getItem('Codeing', 'Codeing', <CodeOutlined />),
+    getItem('Article', 'Article', <LineOutlined />),
+    getItem('Course', 'Course', <LineOutlined />),
 ];
 
 export { routers, menuItems }
