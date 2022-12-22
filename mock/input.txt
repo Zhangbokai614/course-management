@@ -1,372 +1,107 @@
-看完 OS 包中关于文件的基本操作，我们已经对文件的读写有了一个初步的了解，但目前只能做一些最基础的操作，如果想进行更复杂的操作，我们需要用到 I/O 包中的方法。I/O 包实际是 OS 包中部分方法的封装以及拓展，在上周我们也尝试过自己实现一些简单功能，这次我们来看看 Go 的开发者是如何对 OS 包中的方法进行封装的。
+# A demo of `react-markdown`
 
-首先，在面对一个包中许多方法以及其它内容时，先分类，可以让我们的思路更加清晰，并且在全局上对 I/O 包有一个初步的了解。
+`react-markdown` is a markdown component for React.
 
-**图 1** 为 I/O 包中类型、方法、接口的一个简单分类，我们选择从分支最少的 Writer 入手，因为 Copy 需要用到 Writer 与 Reader 来实现，所以第二部分来了解 Reader，然后是 Copy 以及 Pipe，在了解这四大部分时逐渐熟悉了解左侧一系列 interface 作用与用法，以及搞清楚哪些接口是 *Flie 直接满足的。
-![image.png](https://cdn.nlark.com/yuque/0/2022/png/660331/1666328629196-b86240e7-988a-486e-a346-3f8e13dc66c6.png#clientId=u86d95445-4888-4&crop=0&crop=0&crop=1&crop=1&errorMessage=unknown%20error&from=paste&id=ufd420b88&margin=%5Bobject%20Object%5D&name=image.png&originHeight=3328&originWidth=4924&originalType=url&ratio=1&rotation=0&showTitle=true&size=2237962&status=error&style=shadow&taskId=u0d0a826f-229d-4298-b713-56d569a9593&title=%E5%9B%BE%201%EF%BC%9AI%2FO%20method "图 1：I/O method")
-以下为本期内容大纲。
+👉 Changes are re-rendered as you type.
 
-   - Write
-      - writeString
-      - MultiWriter()
-   - Read
-      - ReadAll
-      - ReadAtLeast && ReadFull
-   - Summarize
+👈 Try writing some markdown on the left.
 
-## Write
-### writeString
-关于 Write 操作有两个方法，分别是 MultiWriter() 与 WriteString()，这两个方法的实现都并不复杂，我们先看 WriteString() 的源码 **Code-1**。
-```go
-func WriteString(w Writer, s string) (n int, err error) {
-    if sw, ok := w.(StringWriter); ok {
-        return sw.WriteString(s)
-    }
-    return w.Write([]byte(s))
-}
-```
+## Overview
 
-WriteString() 接收一个实现了 Writer 接口的实例 w 与一个要写入其中的 string s，如果 w 又实现了 StringWriter 接口，则直接调用 w 本身的 WriteString() 方法，否则使用 Writer 接口中的 Write()  方法对 s 进行类型转换之后写入。**Code-2** 为两个接口的源码。
-```go
-type Writer interface {
-	Write(p []byte) (n int, err error)
-}
+* Follows [CommonMark](https://commonmark.org)
+* Optionally follows [GitHub Flavored Markdown](https://github.github.com/gfm/)
+* Renders actual React elements instead of using `dangerouslySetInnerHTML`
+* Lets you define your own components (to render `MyHeading` instead of `h1`)
+* Has a lot of plugins
 
-type StringWriter interface {
-	WriteString(s string) (n int, err error)
-}
-```
+## Table of contents
 
-在 **Code-3** 中，因为 *File 类型自身实现了 Writer() 与 WriteString() 两个方法，所以 *File 同时满足 Writer 与 StringWriter 两个接口。我们打开一个内容为空的 testing.text 文件，并且使用 WriteString() 方法向其写入字符串 Hello World，**L21** 为执行后的内容，WriteString() 方法直接调用 *File 自身的 WriteString() 把 s 写入文件。
-```go
-package main
+Here is an example of a plugin in action
+([`remark-toc`](https://github.com/remarkjs/remark-toc)).
+This section is replaced by an actual table of contents.
 
-import (
-	"io"
-	"log"
-	"os"
+## Syntax highlighting
+
+Here is an example of a plugin to highlight code:
+[`rehype-highlight`](https://github.com/rehypejs/rehype-highlight).
+
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import ReactMarkdown from 'react-markdown'
+import rehypeHighlight from 'rehype-highlight'
+
+ReactDOM.render(
+  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{'# Your markdown here'}</ReactMarkdown>,
+  document.querySelector('#content')
 )
-
-func main() {
-	f, err := os.OpenFile("testing.text", os.O_WRONLY, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err := io.WriteString(f, "Hello World"); err != nil {
-		log.Fatal(err)
-	}
-
-}
-
-// testing.text: Hello World
 ```
 
-### MultiWriter() 
-MultiWriter() 方法可以把多个写入对象合并在一起，返回一个包含这些对象的 Writer，类似分组，当朝这个分组进行 Write 操作时，组内所有对象都会被写入相同内容。
+Pretty neat, eh?
 
-**Code-4 **为MultiWriter() 方法的源码，整体逻辑为创建存放所有 Writer 的 slice，然后把传入的 Writer 存入其中，并且如果传入的是另一个组，会将其展开并存入，最后返回实现了 Writer 接口的 multiWriter。
-```go
-type multiWriter struct {
-	writers []Writer
-}
+## GitHub flavored markdown (GFM)
 
-func MultiWriter(writers ...Writer) Writer {
-	allWriters := make([]Writer, 0, len(writers))
-	for _, w := range writers {
-		if mw, ok := w.(*multiWriter); ok {
-			allWriters = append(allWriters, mw.writers...)
-		} else {
-			allWriters = append(allWriters, w)
-		}
-	}
-	return &multiWriter{allWriters}
-}
-```
+For GFM, you can *also* use a plugin:
+[`remark-gfm`](https://github.com/remarkjs/react-markdown#use).
+It adds support for GitHub-specific extensions to the language:
+tables, strikethrough, tasklists, and literal URLs.
 
-在向 multiWriter 执行 Write 操作时，它是如何把内容写入其中所有 Writer 的？我们来看看源码 **Code-5** 中 multiWriter 类型上 Wrire() 方法的实现。
+These features **do not work by default**.
+👆 Use the toggle above to add the plugin.
 
-实现并不难，通过 for 遍历 **Code-4** 中存放所有 Writer 的 writers，把内容逐个写入到每个 Writer 中，并且中途出现异常时会直接 return，停止对后续 Writer 的 Write 操作。
-```go
-func (t *multiWriter) Write(p []byte) (n int, err error) {
-	for _, w := range t.writers {
-		n, err = w.Write(p)
-		if err != nil {
-			return
-		}
-		if n != len(p) {
-			err = ErrShortWrite
-			return
-		}
-	}
-	return len(p), nil
-}
-```
- 
-现在来简单使用一下 MultiWriter() 方法，如 **Code-6** 所示，我们打开两个写有 "Hello World!" 的文件，并且使用 MultiWriter() 方法把他们放入 writes 中，然后对 writes 写入 "world!" 的 16 进制码，程序执行后两文件内容分别为 **L30** 与 **L31** 两个文件都被吸入了相同内容。
-```go
-package main
+| Feature    | Support              |
+| ---------: | :------------------- |
+| CommonMark | 100%                 |
+| GFM        | 100% w/ `remark-gfm` |
 
-import (
-	"io"
-	"log"
-	"os"
+~~strikethrough~~
+
+* [ ] task list
+* [x] checked item
+
+https://example.com
+
+## HTML in markdown
+
+⚠️ HTML in markdown is quite unsafe, but if you want to support it, you can
+use [`rehype-raw`](https://github.com/rehypejs/rehype-raw).
+You should probably combine it with
+[`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize).
+
+<blockquote>
+  👆 Use the toggle above to add the plugin.
+</blockquote>
+
+## Components
+
+You can pass components to change things:
+
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import ReactMarkdown from 'react-markdown'
+import MyFancyRule from './components/my-fancy-rule.js'
+
+ReactDOM.render(
+  <ReactMarkdown
+    components={{
+      // Use h2s instead of h1s
+      h1: 'h2',
+      // Use a component instead of hrs
+      hr: ({node, ...props}) => <MyFancyRule {...props} />
+    }}
+  >
+    # Your markdown here
+  </ReactMarkdown>,
+  document.querySelector('#content')
 )
-
-func main() {
-	f, err := os.OpenFile("testing.text", os.O_RDWR|os.O_APPEND, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fc, err := os.OpenFile("testing_copy.text", os.O_RDWR|os.O_APPEND, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	writes := io.MultiWriter(f, fc)
-
-	testingStr := []byte{0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21}
-
-	_, err = writes.Write(testingStr)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// testing.text: Hello World!world!
-// testing_copy.text: Hello World!world!
 ```
 
-现在回想一下，源码中好像并没有判断传入的 Writer 是否重复，如果多次传入统一 Writer 会怎样？会不会重复写多次？我们在 **Code-7** 中进行简单测试，首先让 writes 存入两个相同的 Writer，之后再把这个 writes 与 之前的 Writer 组合，之后再进行写入，文件初始内容依然为 "Hello World!"，执行之后 testing.text 文件内容为 **L27**。
-```go
-package main
+## More info?
 
-import (
-	"io"
-	"log"
-	"os"
-)
+Much more info is available in the
+[readme on GitHub](https://github.com/remarkjs/react-markdown)!
 
-func main() {
-	f, err := os.OpenFile("testing.text", os.O_RDWR|os.O_APPEND, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
+***
 
-	writes := io.MultiWriter(f, f)
-
-	writes = io.MultiWriter(writes, f)
-
-	testingStr := []byte{0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21}
-
-	_, err = writes.Write(testingStr)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-
-// Hello World!world!world!world!
-```
-	
-果然，同一个 Writer 由于在 multiWriter 中的 writers 重复存了 3 遍，所以重复写入了三次。MultiWriter() 方法调用关系为**图 2**。
-![image.png](https://cdn.nlark.com/yuque/0/2022/png/660331/1666458708379-dcb93b12-3099-45ec-aa5c-31e66874fbf4.png#clientId=u0db916f5-94df-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=516&id=uae85dd43&margin=%5Bobject%20Object%5D&name=image.png&originHeight=2064&originWidth=1544&originalType=url&ratio=1&rotation=0&showTitle=true&size=198863&status=done&style=shadow&taskId=u255d754a-1adb-4578-b82a-526dd1f1169&title=%E5%9B%BE%202%EF%BC%9AMultiWriter&width=386 "图 2：MultiWriter")
-
-## Read
-接下来我们看看三个最基本的 Read 操作，ReadFull、ReadAll 和 ReadAtLast。
-
-### ReadAll
-首先是我们相对比较熟悉的 ReadAll() 方法，**Code-8** 为其源码，首先创建一个 512 大小的 slice，之后利用 append 扩容的特性来存放文件里的全部内容，整体逻辑非常简单，不过有几点小细节是非常值的我们学习的。
-
-首先是 L10 中扩容的方法，因为 slice 选取范围是左闭右开，并且此时 len(b) 还是 append之前的 d，所以截取 `[:len(b)]`不会把用来扩容的 0 存放到 slice 中，最后容量增加但是内容没有变化。**Code-9** 为 append 后立即进行截取与分两步来做的区别。
-
-其次，因为 Read() 方法并不会改变 b 的长度，所以在 **L13** 进行依次更新，并且 b 的最小容量为 512，如果我们读取的文件过小则会造成空间浪费。**图 3** 为 ReadAll 方法的简要实现过程。
-```go
-// ReadAll reads from r until an error or EOF and returns the data it read.
-// A successful call returns err == nil, not err == EOF. Because ReadAll is
-// defined to read from src until EOF, it does not treat an EOF from Read
-// as an error to be reported.
-func ReadAll(r Reader) ([]byte, error) {
-    b := make([]byte, 0, 512)
-    for {
-        if len(b) == cap(b) {
-            // Add more capacity (let append pick how much).
-            b = append(b, 0)[:len(b)]
-        }
-        n, err := r.Read(b[len(b):cap(b)])
-        b = b[:len(b)+n]
-        if err != nil {
-            if err == EOF {
-                err = nil
-            }
-            return b, err
-        }
-    }
-}
-```
-
-```go
-package main
-
-import (
-    "fmt"
-)
-
-func main() {
-    s := []int{ 0, 1, 2 }
-
-    s = append(s, 0)[:len(s)]
-    fmt.Printf("len(s):%d, cap(s): %d, %d \n", len(s), cap(s), s)
-
-    s = append(s, 0)
-    s = s[:len(s)]
-    fmt.Printf("len(s):%d, cap(s): %d, %d \n", len(s), cap(s), s)
-}
-
-// L11: len(s):3, cap(s): 6, [0 1 2] 
-// L15: len(s):4, cap(s): 6, [0 1 2 0] 
-```
-
-![图片.png](https://cdn.nlark.com/yuque/0/2022/png/660331/1666323881934-b774599c-64b1-43c8-affc-47fe5aba643c.png#clientId=uf2cfeb7f-a478-4&crop=0&crop=0&crop=1&crop=1&errorMessage=unknown%20error&from=paste&height=382&id=u369178f2&margin=%5Bobject%20Object%5D&name=%E5%9B%BE%E7%89%87.png&originHeight=1528&originWidth=1168&originalType=binary&ratio=1&rotation=0&showTitle=true&size=51827&status=error&style=shadow&taskId=uadc487e6-c920-479f-b003-7722fc656e2&title=%E5%9B%BE%203%EF%BC%9AReadAll&width=292 "图 3：ReadAll")
-
-在测试 **Code-10** 中，**L27** 的输出显示有 500 字节的内存空间被浪费，我们可以通过 append 的特性创建一个新 slice，容量与长度输出为 **L28**，之前 slice 的底层数组因为没有被引用，所以占据的内存空间会被回收。因为 ReadAll() 方法在实现扩容时也是使用的 append，所以在文件长度超过 ReadAll() 方法中 buf 的初始大小 512 之后不需要再使用 append 回收内存空间，即使这样处理也没有意义。
-```go
-package main
-
-import (
-	"fmt"
-	"io"
-	"log"
-	"os"
-)
-
-func main() {
-	f, err := os.OpenFile("testing.text", os.O_RDWR|os.O_APPEND, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	b, err := io.ReadAll(f)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("len(b): %d, cap(b): %d, b: %s\n", len(b), cap(b), b)
-
-	data := append(b[0:0:0], b[:]...)
-
-	fmt.Printf("len(data): %d, cap(data): %d, data: %s\n", len(data), cap(data), data)
-}
-
-// len(b): 12, cap(b): 512, b: Hello World!
-// len(data): 12, cap(data): 16, data: Hello World!
-```
-
-### ReadAtLeast && ReadFull
-因为 ReadFull() 是 ReadAtLeast() 方法的一个封装，所以我们先来看看 ReadAtLeast() 是如何实现的。
-
-ReadAtLeast() 方法源码为 **Code-11**，作用为读取 min 个 byte 到 buf 中，如果指定的 min 大于 buf 的长度，则返回 `ErrShortBuffer`错误，如果目标 Reader 中内容长度小于 min，则返回`ErrUnexpectedEOF`错误，如果顺利读取到了至少 min 个 byte，则不会返回任何错误。**图 4** 为这一方法的三种情况。
-```go
-// ReadAtLeast reads from r into buf until it has read at least min bytes.
-// It returns the number of bytes copied and an error if fewer bytes were read.
-// The error is EOF only if no bytes were read.
-// If an EOF happens after reading fewer than min bytes,
-// ReadAtLeast returns ErrUnexpectedEOF.
-// If min is greater than the length of buf, ReadAtLeast returns ErrShortBuffer.
-// On return, n >= min if and only if err == nil.
-// If r returns an error having read at least min bytes, the error is dropped.
-func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error) {
-	if len(buf) < min {
-		return 0, ErrShortBuffer
-	}
-	for n < min && err == nil {
-		var nn int
-		nn, err = r.Read(buf[n:])
-		n += nn
-	}
-	if n >= min {
-		err = nil
-	} else if n > 0 && err == EOF {
-		err = ErrUnexpectedEOF
-	}
-	return
-}
-```
-
-![图片.png](https://cdn.nlark.com/yuque/0/2022/png/660331/1666323907980-c74599ba-fa5f-4b54-a3a9-9155ff0d5e74.png#clientId=uf2cfeb7f-a478-4&crop=0&crop=0&crop=1&crop=1&errorMessage=unknown%20error&from=paste&height=691&id=ue91a80e6&margin=%5Bobject%20Object%5D&name=%E5%9B%BE%E7%89%87.png&originHeight=2764&originWidth=1680&originalType=binary&ratio=1&rotation=0&showTitle=true&size=135087&status=error&style=shadow&taskId=u3f95839e-249e-4ab7-a536-c299de1479d&title=%E5%9B%BE%204%EF%BC%9AReadFull&width=420 "图 4：ReadFull")
-
-**Code-12** 与 **Code-13** 分别为 `ErrShortBuffer`** **与 `ErrUnexpectedEOF` 两种情况的测试（testing.text 内容为 Hello World!）。
-```go
-package main
-
-import (
-	"fmt"
-	"io"
-	"log"
-	"os"
-)
-
-func main() {
-	f, err := os.OpenFile("testing.text", os.O_RDWR|os.O_APPEND, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	min := 8
-
-	buf := make([]byte, 6)
-
-	n, err := io.ReadAtLeast(f, buf, min)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("n: %d, buf: %s \n", n, buf)
-}
-
-// 2022/10/21 11:47:47 short buffer
-// exit status 1
-```
-
-```go
-package main
-
-import (
-	"fmt"
-	"io"
-	"log"
-	"os"
-)
-
-func main() {
-	f, err := os.OpenFile("testing.text", os.O_RDWR|os.O_APPEND, 0)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	min := 18
-
-	buf := make([]byte, min)
-
-	n, err := io.ReadAtLeast(f, buf, min)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("n: %d, buf: %s \n", n, buf)
-}
-
-// 2022/10/21 11:49:09 unexpected EOF
-// exit status 1
-```
-
-**Code-14** 为 ReadFull() 方法的实现，直接调用 ReadAtLeast() 方法，把 len(buf) 作为 min，就变成了最少读 len(buf) 个 byte，即把 buf 读满，由于 ReadFull() 方法只是 ReadAtLeast 方法的简单封装，当 len(buf) 大于 Reader 内容长度时，依然会返回 `ErrUnexpectedEOF` 这里不再重复测试。
-```go
-func ReadFull(r Reader, buf []byte) (n int, err error) {
-	return ReadAtLeast(r, buf, len(buf))
-}
-```
-
-## Summarize
-篇幅原因，本周的内容就到这里，不难发现本周我们除了对一些基础的 IO 操作与有了初步的认识，收获更多的是对 slice 的理解，比如 Code-8 L10 中的运算顺序，之前因为习惯性使用 append 返回的新 slice 覆盖旧 slice 而忽略的 append 不会改变原 slice 的特性，还有截取 slice 时使用三个参数把 cap 归零来释放空间的操作，都让我们对 slice 与 append 有了新的理解。
-
+A component by [Espen Hovlandsdal](https://espen.codes/)
