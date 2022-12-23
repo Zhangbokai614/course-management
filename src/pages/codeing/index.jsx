@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import MonacoEditor from 'react-monaco-editor/lib/editor';
-import { Select, theme } from 'antd';
-import { ReloadOutlined } from '@ant-design/icons';
-import 'antd/dist/reset.css';
+import React, { useState } from "react";
+import MonacoEditor from "react-monaco-editor/lib/editor";
+import { Row, Col, Select, theme, Typography, Space } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
+import "antd/dist/reset.css";
 
-import languages from './languages';
-import compare from './compare';
-import './index.css'
+import languages from "./languages";
+import compare from "./compare";
+import "./index.css";
 
-const defaultLanguages = languages[0].value
+const defaultLanguages = languages[0].value;
 const { useToken } = theme;
-
+const { Text } = Typography;
 
 const CodeingPage = () => {
   const { token } = useToken();
@@ -19,17 +19,27 @@ const CodeingPage = () => {
   const [currentCompares, setCurrentCompares] = useState(compare[language]);
 
   const selectHandleChange = (value) => {
-    setLanguage(value)
+    setLanguage(value);
 
-    setCurrentCompares(compare[value])
-  }
+    setCurrentCompares(compare[value]);
+  };
 
   const onChange = (newValue) => {
     console.log("onChange", newValue);
   };
 
   const editorDidMount = (editor) => {
-    console.log(editor)
+    console.log(editor);
+  };
+
+  const padding = token.paddingXS;
+  const margin = token.marginSM;
+  const borderRadius = token.borderRadius;
+
+  const boxStyle = {
+    borderRadius: borderRadius,
+    backgroundColor: token.colorBgContainer,
+    padding: padding,
   };
 
   const monacoOptions = {
@@ -42,35 +52,50 @@ const CodeingPage = () => {
     folding: true,
   };
 
-  const boxStyle = {
-    borderRadius: token.borderRadius,
-    backgroundColor: token.colorBgContainer,
-    color: token.colorTextSecondary,
-  }
-
   return (
-    <div
-      className='codeing-root'
+    <Row
+      className="codeing-root"
+      wrap={false}
       style={{
-        borderRadius: token.borderRadius,
+        borderRadius: borderRadius,
         backgroundColor: token.colorBgLayout,
-        color: token.colorTextSecondary,
+        margin: margin,
+        padding: padding,
       }}
     >
-      <div className='editor' style={{ borderRadius: token.borderRadius }}>
-        <div className='header'>
-          <p className='text' >Editor</p>
-          <Select
-            defaultValue={defaultLanguages}
-            style={{ width: "10vw" }}
-            onChange={selectHandleChange}
-            options={languages}
-          />
-        </div>
-        <div className='editor-body' style={boxStyle}>
+      <Col
+        className="editor"
+        span={18}
+        style={{
+          height: "100%",
+          paddingRight: padding,
+        }}
+      >
+        <Row
+          className="codeing-header"
+          align="middle"
+          wrap={false}
+          style={{
+            padding: padding,
+          }}
+        >
+          <Col span={20}>
+            <Text className="text" ellipsis type="secondary">
+              Editor
+            </Text>
+          </Col>
+          <Col span={4}>
+            <Select
+              defaultValue={defaultLanguages}
+              onChange={selectHandleChange}
+              options={languages}
+            />
+          </Col>
+        </Row>
+        <Row className="editor-body" style={boxStyle}>
           <MonacoEditor
-            className={'monaco-editor'}
-            height="80vh"
+            className="monaco-editor"
+            height="100%"
             language={language}
             value=""
             options={monacoOptions}
@@ -78,15 +103,40 @@ const CodeingPage = () => {
             editorDidMount={(editor) => editorDidMount(editor)}
             theme="vs-light"
           />
-        </div>
-      </div>
-      <div className='output'>
-        <div className='header'>
-          <p className='text'>Execution stdin</p>
-        </div>
-        <div className='stdin' style={boxStyle}></div>
-        <div className='compler'>
-          <p className='text'>Compler</p>
+        </Row>
+      </Col>
+      <Col
+        className="output"
+        span={6}
+        style={{
+          paddingLeft: padding,
+        }}
+      >
+        <Row
+          className="codeing-header"
+          align="middle"
+          wrap={false}
+          style={{
+            padding: padding,
+          }}
+        >
+          <Text className="text" ellipsis type="secondary">
+            Execution stdin
+          </Text>
+        </Row>
+        <Row className="stdin" style={boxStyle}></Row>
+        <Space
+          size={16}
+          className="compler"
+          align="center"
+          wrap={false}
+          style={{
+            padding: padding,
+          }}
+        >
+          <Text className="text" ellipsis type="secondary">
+            Compler
+          </Text>
           <Select
             key={currentCompares[0].value}
             defaultValue={currentCompares[0].label}
@@ -94,14 +144,23 @@ const CodeingPage = () => {
             options={currentCompares}
             showSearch={true}
           />
-          <p className='text'>State</p>
+          <Text className="text" ellipsis type="secondary">
+            State
+          </Text>
           <ReloadOutlined />
-        </div>
-        <div className='stdout' style={boxStyle}></div>
-        <p className='text'>Info</p>
-        <div className='info' style={boxStyle}></div>
-      </div>
-    </div>
+        </Space>
+        <Row className="stdout" style={boxStyle}></Row>
+        <Text
+          className="text info-text"
+          ellipsis
+          type="secondary"
+          style={{ padding: padding }}
+        >
+          Info
+        </Text>
+        <Row className="info" style={boxStyle}></Row>
+      </Col>
+    </Row>
   );
 };
 

@@ -1,83 +1,19 @@
-.codeing-root {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    height: 92vh;
-    margin-left: 0.8vw;
-    margin-right: 0.8vw;
-    margin-top: 1.2vh;
-    margin-bottom: 1.2vh;
-    padding-left: 0.8vw;
-    padding-right: 0.8vw;
-    padding-top: 1.2vh;
-    padding-bottom: 1.2vh;
-}
-
-.editor {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    width: 67.8vw;
-    height: 100%;
-    margin-right: 0.35vw;
-}
-
-.header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-content: center;
+.codeing-header {
     height: 6vh;
-    padding-left: 0.2vw;
-    padding-right: 0.8vw;
-    padding-top: 1.2vh;
-    padding-bottom: 1.2vh;
 }
 
 .text {
-    margin-top: auto;
-    margin-bottom: auto;
     height: 3.2vh;
     line-height: 3.2vh;
-    overflow: hidden;
-}
-
-.select-label {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-}
-
-.select-label-text {
-    margin-left: 1.2vw;
 }
 
 .editor-body {
-    height: 100%;
-    padding-right: 0.8vw;
-    padding-top: 1.66vh;
-    padding-bottom: 1.66vh;
-}
-
-.output {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    width: 23.8vw;
-    height: 100%;
-    margin-left: 0.35vw;
+    height: 84.06vh;
+    /* stdin + compler + stdint + info-text + info */
 }
 
 .compler {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
     height: 6.2vh;
-    padding-left: 0.2vw;
-    padding-right: 0.8vw;
-    padding-top: 1.2vh;
-    padding-bottom: 1.2vh;
 }
 
 .stdin {
@@ -85,9 +21,13 @@
 }
 
 .stdout {
-    height: 58vh;
+    height: 54vh;
+}
+
+.info-text {
+    height: 5.2vh;
 }
 
 .info {
-    height: 6.66vh;
+    height: 8.66vh;
 }

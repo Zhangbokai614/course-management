@@ -1,4 +1,4 @@
-import { Image } from 'antd';
+import { Col, Image, Row, Typography } from 'antd';
 
 import logoPython from '../../assets/logo/python.png'
 import logoJavaScript from '../../assets/logo/javascript.png'
@@ -6,15 +6,30 @@ import logoGo from '../../assets/logo/go.png'
 import logoC from '../../assets/logo/c.png'
 import logoDart from '../../assets/logo/dart.png'
 
+const { Text } = Typography;
+
 const selectLabel = (image, text) => {
   return (
-    <div className='select-label'>
-    <Image
-      src={image}
-      width='10%'
-    />
-    <div className='select-label-text'>{text}</div>
-  </div>
+    <Row
+      className='select-label'
+      justify='space-between'
+      align='middle'
+      wrap={false}
+      style={{
+        paddingRight: '1vw'
+      }}
+    >
+      <Col span={8}>
+        <Image
+          preview={false}
+          src={image}
+          width='48%'
+        />
+      </Col>
+      <Col span={16}>
+        <Text className='text' ellipsis>{text}</Text>
+      </Col>
+    </Row>
   )
 }
 

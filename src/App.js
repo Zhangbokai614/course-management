@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Image, ConfigProvider, theme, Switch, Avatar, Space } from 'antd';
+import { Layout, Menu, Image, ConfigProvider, theme, Switch, Avatar, Space, Typography } from 'antd';
 import { UserOutlined, GlobalOutlined, SearchOutlined } from '@ant-design/icons';
 
 import 'antd/dist/reset.css';
@@ -9,6 +9,7 @@ import { routers, menuItems } from './routers';
 
 const { Header, Content, Sider } = Layout;
 const { useToken } = theme;
+const { Text } = Typography;
 
 const App = () => {
   const defaultPage = 'Home'
@@ -41,11 +42,19 @@ const App = () => {
           onCollapse={(value) => setCollapsed(value)}
         >
           <Image
+            preview={false}
             src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
             height='4.6vh'
             width='100%'
           />
-          <Menu theme="dark" defaultSelectedKeys={[defaultPage]} mode="vertical" items={menuItems} onClick={(item) => { switchPage(item.key) }} />
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={[defaultPage]}
+            mode="vertical" items={menuItems}
+            onClick={(item) => {
+              switchPage(item.key)
+            }}
+          />
         </Sider>
         <Layout className="site-layout">
           <Header
@@ -58,15 +67,14 @@ const App = () => {
               zIndex: 10,
             }}
           >
-            <Space size={16} align={'center'}>
+            <Space size={16} align={'center'} style={{ paddingRight: token.paddingSM }}>
               <SearchOutlined />
               <Switch defaultChecked />
               <Space size={8} align={'center'}>
                 <Avatar size="small" icon={<UserOutlined />} />
-                <div>User</div>
+                <Text>User</Text>
               </Space>
               <GlobalOutlined />
-              <div/>
             </Space>
           </Header>
           <Content
@@ -84,4 +92,5 @@ const App = () => {
     </ConfigProvider>
   );
 };
+
 export default App;
