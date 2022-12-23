@@ -6,30 +6,22 @@
 .up {
   background-color: white;
   height: 200px;
-  background-image: url('../../assets/img/home-up.png');
   background-position: right;
   background-repeat: no-repeat;
   position: relative;
+  padding-top: 48px;
 }
 
-.upLink {
+.up-link {
   position: absolute;
   bottom: 20px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
 }
 
-.upTitleText {
-  color: black;
-  font-size: 20px;
-  font-weight: bold;
-  opacity: 85%;
+.link-text {
+  height: 24px;
+  line-height: 24px;
 }
 
-.upSmallTitleText {
-  color: black;
-  font-size: 14px;
+.font-bold {
   font-weight: bold;
-  opacity: 65%;
 }

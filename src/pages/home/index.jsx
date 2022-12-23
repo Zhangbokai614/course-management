@@ -1,45 +1,70 @@
 import React from 'react';
 import 'antd/dist/reset.css';
+import { theme, Col, Row, Typography, Space } from 'antd';
 import { InfoCircleOutlined, SendOutlined } from '@ant-design/icons';
 
 import './index.css'
-import { Placeholder } from '../../components/placeholder';
+import homeUp from '../../assets/img/home-up.png'
+import homeMiddle from '../../assets/img/home-middle.png'
+
+const { useToken } = theme;
+const { Text, Paragraph, Link } = Typography;
 
 const HomePage = () => {
+  const { token } = useToken();
+
+  let imgs = (() => {
+    return [
+      homeUp,
+      homeMiddle,
+      homeMiddle
+    ];
+  })()
+
   return (
-    <div className='App'>
-      <div className='up'>
-        <Placeholder height='54px' display='block' />
-        <div>
-          <Placeholder width='32px' display='inline-block' />
-          <div className='upTitleText' style={{ display: 'inline' }}>Weclome</div>
-        </div>
+    <div>
+      <Paragraph className='up' style={{ backgroundImage: `url(${imgs[0]})` }}>
+        <Space direction='vertical' size={token.margin} style={{ marginLeft: token.marginXL }}>
+          <Text className='font-bold' style={{ fontSize: token.fontSizeXL, color: token.colorText }}>Weclome</Text>
+          <Text className='font-bold' style={{ fontSize: token.fontSize, color: token.colorTextSecondary }}>欢迎进入程序员大家庭!</Text>
+        </Space>
 
-        <Placeholder height='16px' display='block' />
-        <div>
-          <Placeholder width='32px' display='inline-block' />
-          <div className='upSmallTitleText' style={{ display: 'inline' }}>欢迎进入程序员大家庭!</div>
-        </div>
+        <Row className='up-link'>
+          {
+            [
+              {
+                icon: <SendOutlined style={{ fontSize: token.fontSizeHeading3 }} />,
+                linkText: <Text className='link-text' style={{ color: token.colorPrimary, fontSize: token.fontSize }}>&nbsp;快速开始</Text>
+              },
+              {
+                icon: <InfoCircleOutlined style={{ fontSize: token.fontSizeHeading3 }} />,
+                linkText: <Text className='link-text' style={{ color: token.colorPrimary, fontSize: token.fontSize }}>&nbsp;选择课程</Text>
+              },
+            ].map(v => {
+              return <Col>
+                <Link href="#" style={{ marginLeft: token.marginXL, display: 'flex' }}>
+                  {v.icon}
+                  {v.linkText}
+                </Link>
+              </Col>;
+            })
+          }
+        </Row>
+      </Paragraph>
 
-        <div className='upLink'>
-          <Placeholder width='32px' display='inline-block' />
-          <div style={{ display: 'flex', flexDirection: 'row', color: '#1890FF' }}>
-            <SendOutlined style={{ fontSize: '24px' }} />
-            <div style={{ height: '24px', fontSize: '14px', lineHeight: '24px' }}>&nbsp;快速开始</div>
-          </div>
-          <Placeholder width='32px' display='inline-block' />
-          <div style={{ display: 'flex', flexDirection: 'row', color: '#1890FF' }}>
-            <InfoCircleOutlined style={{ fontSize: '24px' }} />
-            <div style={{ height: '24px', fontSize: '14px', lineHeight: '24px' }}>&nbsp;选择课程</div>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ marginTop: '26px', marginLeft: '24px', marginRight: '24px', textAlign: 'center' }}>
-        <img src={[require('../../assets/img/home-middle.png')]} alt='' style={{ width: '100%' }} />
-        <Placeholder height='26px' display='block' />
-        <img src={[require('../../assets/img/home-middle.png')]} alt='' style={{ width: '100%' }} />
-      </div>
+      <Row style={{ marginTop: token.marginLG, paddingLeft: token.paddingLG, paddingRight: token.paddingLG }}>
+        <Col flex="auto">
+          {
+            imgs.map((v, i) => {
+              return i !== 0 ? <Row style={{ marginBottom: token.margin }}>
+                <Col flex="100%">
+                  <img src={v} alt='' style={{ width: "100%" }} />
+                </Col>
+              </Row> : undefined;
+            })
+          }
+        </Col>
+      </Row>
     </div >
   )
 };
