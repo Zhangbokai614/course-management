@@ -3,9 +3,9 @@ import { Layout, Menu, Image, ConfigProvider, theme, Switch, Avatar, Space, Typo
 import { UserOutlined, GlobalOutlined, SearchOutlined } from '@ant-design/icons';
 
 import 'antd/dist/reset.css';
-import './App.css'
+import './App.css';
 
-import { routers, menuItems } from './routers';
+import { menuItems, PageControl } from './routers';
 
 const { Header, Content, Sider } = Layout;
 const { useToken } = theme;
@@ -13,12 +13,26 @@ const { Text } = Typography;
 
 const App = () => {
   const defaultPage = 'Home'
-  const { token } = useToken();
-  const [collapsed, setCollapsed] = useState(false);
+  const { token } = useToken()
+  const [collapsed, setCollapsed] = useState(false)
   const [currentPage, setCurrentPage] = useState(defaultPage)
+  const [pageContext, setPageContext] = useState({})
 
-  const switchPage = (value) => {
-    setCurrentPage(value)
+  const menuSwitchPage = (page) => {
+    setCurrentPage(page)
+  }
+
+  const switchPage = (page, context = {}) => {
+    setCurrentPage(page)
+
+    const keys = Object.keys(context)
+    let temp = pageContext
+
+    for (let i = 0; i < keys.length; i++) {
+      temp[keys[i]] = context[keys[i]]
+    }
+
+    setPageContext(temp)
   }
 
   return (
@@ -52,7 +66,7 @@ const App = () => {
             defaultSelectedKeys={[defaultPage]}
             mode="vertical" items={menuItems}
             onClick={(item) => {
-              switchPage(item.key)
+              menuSwitchPage(item.key)
             }}
           />
         </Sider>
@@ -85,7 +99,7 @@ const App = () => {
               zIndex: 5,
             }}
           >
-            {routers[currentPage]}
+            {PageControl(currentPage, switchPage, pageContext)}
           </Content>
         </Layout>
       </Layout>
