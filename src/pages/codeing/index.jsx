@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import MonacoEditor from "react-monaco-editor/lib/editor";
-import { Row, Col, Select, theme, Typography, Space } from "antd";
+import { Row, Col, Select, theme, Typography, Space, Input } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
+import MonacoEditor from "react-monaco-editor/lib/editor";
 import "antd/dist/reset.css";
 
 import languages from "./languages";
@@ -11,12 +11,20 @@ import "./index.css";
 const defaultLanguages = languages[0].value;
 const { useToken } = theme;
 const { Text } = Typography;
+const { TextArea } = Input;
 
-const CodeingPage = () => {
+const CodeingPage = (props) => {
+  const changePage = props.changePage;
+  let execing = false;
+  let aboutExec = "";
+
   const { token } = useToken();
 
   const [language, setLanguage] = useState(defaultLanguages);
   const [currentCompares, setCurrentCompares] = useState(compare[language]);
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [info, setInfo] = useState("");
 
   const selectHandleChange = (value) => {
     setLanguage(value);
@@ -25,7 +33,24 @@ const CodeingPage = () => {
   };
 
   const onChange = (newValue) => {
-    console.log("onChange", newValue);
+    aboutExec = newValue;
+
+    if (!execing) {
+      execing = true;
+      const currentExec = aboutExec;
+      const result = {
+        output: "Example: " + currentExec,
+        info: currentExec.length,
+      };
+      execing = false;
+
+      setOutput(result.output);
+      setInfo(result.info);
+
+      if (currentExec !== aboutExec) {
+        onChange(aboutExec);
+      }
+    }
   };
 
   const editorDidMount = (editor) => {
@@ -80,7 +105,12 @@ const CodeingPage = () => {
           }}
         >
           <Col span={20}>
-            <Text className="text" ellipsis type="secondary">
+            <Text
+              className="text"
+              ellipsis
+              type="secondary"
+              onClick={() => {changePage("Course", {'id':1123456})}}
+            >
               Editor
             </Text>
           </Col>
@@ -124,7 +154,15 @@ const CodeingPage = () => {
             Execution stdin
           </Text>
         </Row>
-        <Row className="stdin" style={boxStyle}></Row>
+        <TextArea
+          className="stdin"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder=""
+          autoSize={{ minRows: 3, maxRows: 3 }}
+          bordered={false}
+          style={boxStyle}
+        />
         <Space
           size={16}
           className="compler"
@@ -149,7 +187,12 @@ const CodeingPage = () => {
           </Text>
           <ReloadOutlined />
         </Space>
-        <Row className="stdout" style={boxStyle}></Row>
+        <Row className="stdout" style={boxStyle}>
+          <Space direction="vertical" size="middle">
+            <Text>program stdout: </Text>
+            <Text>{output}</Text>
+          </Space>
+        </Row>
         <Text
           className="text info-text"
           ellipsis
@@ -158,7 +201,9 @@ const CodeingPage = () => {
         >
           Info
         </Text>
-        <Row className="info" style={boxStyle}></Row>
+        <Row className="info" style={boxStyle}>
+          <Text>{info}</Text>
+        </Row>
       </Col>
     </Row>
   );
