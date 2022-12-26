@@ -10,8 +10,9 @@ import homeMiddle from '../../assets/img/home-middle.png'
 const { useToken } = theme;
 const { Text, Paragraph, Link } = Typography;
 
-const HomePage = () => {
+const HomePage = (props) => {
   const { token } = useToken();
+  const changePage = props.changePage;
 
   let imgs = (() => {
     return [
@@ -34,15 +35,16 @@ const HomePage = () => {
             [
               {
                 icon: <SendOutlined style={{ fontSize: token.fontSizeHeading3 }} />,
-                linkText: <Text className='link-text' style={{ color: token.colorPrimary, fontSize: token.fontSize }}>&nbsp;快速开始</Text>
+                linkText: <Text className='link-text' style={{ color: token.colorPrimary, fontSize: token.fontSize }}>&nbsp;快速开始</Text>,
+                action: () => changePage("CourseList", {})
               },
               {
                 icon: <InfoCircleOutlined style={{ fontSize: token.fontSizeHeading3 }} />,
-                linkText: <Text className='link-text' style={{ color: token.colorPrimary, fontSize: token.fontSize }}>&nbsp;选择课程</Text>
+                linkText: <Text className='link-text' style={{ color: token.colorPrimary, fontSize: token.fontSize }}>&nbsp;选择课程</Text>,
               },
             ].map(v => {
               return <Col>
-                <Link href="#" style={{ marginLeft: token.marginXL, display: 'flex' }}>
+                <Link onClick={v.action} href="#" style={{ marginLeft: token.marginXL, display: 'flex' }}>
                   {v.icon}
                   {v.linkText}
                 </Link>
