@@ -1,78 +1,20 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
 .head {
+  height: 200px;
   background-color: white;
-  height: 174px;
 }
 
-.titleText {
-  color: black;
-  font-size: 20px;
+.font-bold {
   font-weight: bold;
-  opacity: 85%;
 }
 
-.smallTitleText {
-  color: black;
-  font-size: 14px;
-  font-weight: bold;
-  opacity: 65%;
-}
-
-#radioButtonGroup {
-  padding-top: 13px;
-  padding-bottom: 13px;
-  padding-right: 0px;
-  padding-left: 0px;
-}
-
-.hidden {
-  height: 46px;
-  overflow: hidden;
-}
-
-.show {
-  height: auto;
-  overflow: visible;
-}
-
-.itemCategory {
-  height: 20px;
-  border-radius: 4px;
-  line-height: 20px;
-  display: inline-block;
-  margin-top: 13px;
-  margin-bottom: 13px;
-  margin-right: 36px;
-}
-
-.tabs {
+.page {
   display: flex;
-  flex-direction: row;
-}
-
-#contentBox {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  overflow-y: scroll;
-  height: 470px;
-  background-color: white;
+  flex-direction: column;
+  height: 100%;
   width: 100%;
 }
 
-.itemContent {
-  color: red;
-  flex: 0 0 19%;
-  margin-right: calc(5% / 4);
-  margin-bottom: 24px;
+.body {
+  flex: 1;
   background-color: white;
-  height: 212px;
-}
-
-.itemContent:nth-child(5n) {
-  margin-right: 0;
 }
