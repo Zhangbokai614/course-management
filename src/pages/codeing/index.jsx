@@ -109,7 +109,9 @@ const CodeingPage = (props) => {
               className="text"
               ellipsis
               type="secondary"
-              onClick={() => {changePage("Course", {'id':1123456})}}
+              onClick={() => {
+                changePage("Course", { id: 1123456 });
+              }}
             >
               Editor
             </Text>
@@ -161,7 +163,9 @@ const CodeingPage = (props) => {
           placeholder=""
           autoSize={{ minRows: 3, maxRows: 3 }}
           bordered={false}
-          style={boxStyle}
+          allowClear={true}
+          style={{...boxStyle, height: '10vh'}}
+
         />
         <Space
           size={16}
@@ -201,9 +205,11 @@ const CodeingPage = (props) => {
         >
           Info
         </Text>
-        <Row className="info" style={boxStyle}>
-          <Text>{info}</Text>
-        </Row>
+        <Col flex={1}>
+          <Row className="info" style={boxStyle}>
+            <Text>{info}</Text>
+          </Row>
+        </Col>
       </Col>
     </Row>
   );

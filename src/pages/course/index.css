@@ -1,0 +1,33 @@
+.codeing-header {
+    height: 6vh;
+}
+
+.text {
+    height: 3.2vh;
+    line-height: 3.2vh;
+}
+
+.editor-body {
+    height: 84.06vh;
+    /* stdin + compler + stdint + info-text + info */
+}
+
+.compler {
+    height: 6.2vh;
+}
+
+.stdin {
+    height: 10vh;
+}
+
+.stdout {
+    height: 54vh;
+}
+
+.info-text {
+    height: 5.2vh;
+}
+
+.info {
+    height: 8.66vh;
+}
