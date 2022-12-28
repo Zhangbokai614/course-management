@@ -13,8 +13,7 @@ const { useToken } = theme;
 const { Text } = Typography;
 const { TextArea } = Input;
 
-const CodeingPage = (props) => {
-  const changePage = props.changePage;
+const CodeingPage = () => {
   let execing = false;
   let aboutExec = "";
 
@@ -105,14 +104,7 @@ const CodeingPage = (props) => {
           }}
         >
           <Col span={20}>
-            <Text
-              className="text"
-              ellipsis
-              type="secondary"
-              onClick={() => {
-                changePage("Course", { id: 1123456 });
-              }}
-            >
+            <Text className="text" ellipsis type="secondary">
               Editor
             </Text>
           </Col>
@@ -164,8 +156,7 @@ const CodeingPage = (props) => {
           autoSize={{ minRows: 3, maxRows: 3 }}
           bordered={false}
           allowClear={true}
-          style={{...boxStyle, height: '10vh'}}
-
+          style={{ ...boxStyle, height: "10vh" }}
         />
         <Space
           size={16}

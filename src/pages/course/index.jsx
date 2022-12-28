@@ -12,11 +12,16 @@ import {
 } from "antd";
 import { ReloadOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import MonacoEditor from "react-monaco-editor/lib/editor";
+import { useLoaderData } from "react-router-dom";
 import "antd/dist/reset.css";
 
 import languages from "./languages";
 import compare from "./compare";
 import "./index.css";
+
+export async function loader({ params }) {
+  return params
+}
 
 const defaultLanguages = languages[0].value;
 const { useToken } = theme;
@@ -29,6 +34,8 @@ const CoursePage = () => {
   let aboutExec = "";
 
   const { token } = useToken();
+  const params = useLoaderData();
+  console.log(params)
 
   const [collapsed, setCollapsed] = useState(false);
   const [language, setLanguage] = useState(defaultLanguages);
@@ -198,7 +205,6 @@ const CoursePage = () => {
               <Col span={collapsed ? 20 : 19}>
                 <Text className="text" ellipsis type="secondary">
                   Editor
-                  <a href={`contacts/1`}>Your Name</a>
                 </Text>
               </Col>
               <Col span={collapsed ? 4 : 5}>
