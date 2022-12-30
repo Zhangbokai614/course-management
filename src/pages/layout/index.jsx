@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Image, ConfigProvider, theme, Switch, Avatar, Space, Typography } from 'antd';
 import { UserOutlined, GlobalOutlined, SearchOutlined } from '@ant-design/icons';
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import './index.css';
 import { menuItems } from '../../routers';
@@ -11,14 +11,12 @@ const { useToken } = theme;
 const { Text } = Typography;
 
 const PageLayout = () => {
-  const defaultPage = 'Home'
+  const defaultPage = '/'
   const { token } = useToken()
   const [collapsed, setCollapsed] = useState(false)
-  const [currentPage, setCurrentPage] = useState(defaultPage)
 
-  const menuSwitchPage = (page) => {
-    setCurrentPage(page)
-  }
+  const location = useLocation()
+  console.log(location.pathname)
 
   return (
       <ConfigProvider
@@ -49,10 +47,9 @@ const PageLayout = () => {
             <Menu
               theme="dark"
               defaultSelectedKeys={[defaultPage]}
-              mode="vertical" items={menuItems}
-              onClick={(item) => {
-                menuSwitchPage(item.key)
-              }}
+              selectedKeys={[location.pathname]}
+              mode="vertical" 
+              items={menuItems}
             />
           </Sider>
           <Layout className="site-layout">

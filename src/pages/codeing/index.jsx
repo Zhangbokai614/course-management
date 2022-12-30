@@ -1,7 +1,17 @@
 import React, { useState } from "react";
-import { Row, Col, Select, theme, Typography, Space, Input } from "antd";
-import { ReloadOutlined } from "@ant-design/icons";
+import {
+  Row,
+  Col,
+  Select,
+  theme,
+  Typography,
+  Space,
+  Input,
+  Button,
+} from "antd";
+import { ReloadOutlined, CaretRightOutlined } from "@ant-design/icons";
 import MonacoEditor from "react-monaco-editor/lib/editor";
+import { useNavigate } from "react-router-dom";
 import "antd/dist/reset.css";
 
 import languages from "./languages";
@@ -14,13 +24,22 @@ const { Text } = Typography;
 const { TextArea } = Input;
 
 const CodeingPage = () => {
-  let execing = false;
-  let aboutExec = "";
-
   const { token } = useToken();
+  const navigate = useNavigate();
+
+  const goTo = () => {
+    navigate("/course/", {
+      state: { userId: "123" },
+      replace: true,
+    });
+  };
 
   const [language, setLanguage] = useState(defaultLanguages);
   const [currentCompares, setCurrentCompares] = useState(compare[language]);
+  const [runButtonContent, setRunButtonContent] = useState(
+    <CaretRightOutlined />
+  );
+  const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [info, setInfo] = useState("");
@@ -32,24 +51,14 @@ const CodeingPage = () => {
   };
 
   const onChange = (newValue) => {
-    aboutExec = newValue;
+    setCode(newValue);
+  };
 
-    if (!execing) {
-      execing = true;
-      const currentExec = aboutExec;
-      const result = {
-        output: "Example: " + currentExec,
-        info: currentExec.length,
-      };
-      execing = false;
+  const runCode = () => {
+    const result = { output: "Example: " + code, info: code.length };
 
-      setOutput(result.output);
-      setInfo(result.info);
-
-      if (currentExec !== aboutExec) {
-        onChange(aboutExec);
-      }
-    }
+    setOutput(result.output);
+    setInfo(result.info);
   };
 
   const editorDidMount = (editor) => {
@@ -103,17 +112,38 @@ const CodeingPage = () => {
             padding: padding,
           }}
         >
-          <Col span={20}>
-            <Text className="text" ellipsis type="secondary">
+          <Col span={19}>
+            <Text className="text" ellipsis type="secondary" onClick={goTo}>
               Editor
             </Text>
           </Col>
-          <Col span={4}>
-            <Select
-              defaultValue={defaultLanguages}
-              onChange={selectHandleChange}
-              options={languages}
-            />
+          <Col span={5}>
+            <Row wrap={false} justify="end">
+              <Space size={16}>
+                <Select
+                  defaultValue={defaultLanguages}
+                  onChange={selectHandleChange}
+                  options={languages}
+                />
+                <Button
+                  type="primary"
+                  onMouseLeave={() => {
+                    setRunButtonContent(<CaretRightOutlined />);
+                  }}
+                  onMouseMove={() => {
+                    setRunButtonContent("Run");
+                  }}
+                  onClick={() => {
+                    runCode();
+                  }}
+                  style={{
+                    width: "58px",
+                  }}
+                >
+                  {runButtonContent}
+                </Button>
+              </Space>
+            </Row>
           </Col>
         </Row>
         <Row className="editor-body" style={boxStyle}>
@@ -159,7 +189,7 @@ const CodeingPage = () => {
           style={{ ...boxStyle, height: "10vh" }}
         />
         <Space
-          size={16}
+          size={8}
           className="compler"
           align="center"
           wrap={false}

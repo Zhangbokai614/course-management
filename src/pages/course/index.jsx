@@ -10,18 +10,19 @@ import {
   Layout,
   Button,
 } from "antd";
-import { ReloadOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+import {
+  ReloadOutlined,
+  LeftOutlined,
+  RightOutlined,
+  CaretRightOutlined,
+} from "@ant-design/icons";
 import MonacoEditor from "react-monaco-editor/lib/editor";
-import { useLoaderData } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "antd/dist/reset.css";
 
 import languages from "./languages";
 import compare from "./compare";
 import "./index.css";
-
-export async function loader({ params }) {
-  return params
-}
 
 const defaultLanguages = languages[0].value;
 const { useToken } = theme;
@@ -30,20 +31,22 @@ const { TextArea } = Input;
 const { Content, Sider } = Layout;
 
 const CoursePage = () => {
-  let execing = false;
-  let aboutExec = "";
-
   const { token } = useToken();
-  const params = useLoaderData();
-  console.log(params)
+  const location = useLocation();
+
+  console.log(location.state);
 
   const [collapsed, setCollapsed] = useState(false);
   const [language, setLanguage] = useState(defaultLanguages);
   const [currentCompares, setCurrentCompares] = useState(compare[language]);
   const [currentExample, setCurrentExample] = useState(1);
+  const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [info, setInfo] = useState("");
+  const [runButtonContent, setRunButtonContent] = useState(
+    <CaretRightOutlined />
+  );
 
   const selectHandleChange = (value) => {
     setLanguage(value);
@@ -52,29 +55,17 @@ const CoursePage = () => {
   };
 
   const onChange = (newValue) => {
-    aboutExec = newValue;
-
-    if (!execing) {
-      execing = true;
-      const currentExec = aboutExec;
-      const result = {
-        output: "Example: " + currentExec,
-        info: currentExec.length,
-      };
-      execing = false;
-
-      setOutput(result.output);
-      setInfo(result.info);
-
-      if (currentExec !== aboutExec) {
-        onChange(aboutExec);
-      }
-    }
+    setCode(newValue);
   };
 
-  const editorDidMount = (editor) => {
-    console.log(editor);
+  const runCode = () => {
+    const result = { output: "Example: " + code, info: code.length };
+
+    setOutput(result.output);
+    setInfo(result.info);
   };
+
+  const editorDidMount = (editor) => {};
 
   const nextExample = () => {
     setCurrentExample(currentExample + 1);
@@ -146,31 +137,33 @@ const CoursePage = () => {
             padding: padding,
           }}
         >
-          <Col span={18}>
+          <Col span={12}>
             <Title className="text" ellipsis level={4}>
               Example
             </Title>
           </Col>
-          <Col span={6}>
-            <Space align="center" size={6}>
-              <Button
-                size="small"
-                onClick={() => {
-                  prevExample();
-                }}
-              >
-                <LeftOutlined />
-              </Button>
-              <Text type="secondary">{currentExample}</Text>
-              <Button
-                size="small"
-                onClick={() => {
-                  nextExample();
-                }}
-              >
-                <RightOutlined />
-              </Button>
-            </Space>
+          <Col span={12}>
+            <Row justify="end">
+              <Space align="center" size={6}>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    prevExample();
+                  }}
+                >
+                  <LeftOutlined />
+                </Button>
+                <Text type="secondary" wrap={false}>{currentExample}</Text>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    nextExample();
+                  }}
+                >
+                  <RightOutlined />
+                </Button>
+              </Space>
+            </Row>
           </Col>
         </Row>
         <Row className="editor-body" style={boxStyle}></Row>
@@ -202,17 +195,38 @@ const CoursePage = () => {
                 padding: padding,
               }}
             >
-              <Col span={collapsed ? 20 : 19}>
+              <Col span={collapsed ? 19 : 18}>
                 <Text className="text" ellipsis type="secondary">
                   Editor
                 </Text>
               </Col>
-              <Col span={collapsed ? 4 : 5}>
-                <Select
-                  defaultValue={defaultLanguages}
-                  onChange={selectHandleChange}
-                  options={languages}
-                />
+              <Col span={collapsed ? 5 : 6}>
+                <Row wrap={false} justify="end">
+                  <Space size={16}>
+                    <Select
+                      defaultValue={defaultLanguages}
+                      onChange={selectHandleChange}
+                      options={languages}
+                    />
+                    <Button
+                      type="primary"
+                      onMouseLeave={() => {
+                        setRunButtonContent(<CaretRightOutlined />);
+                      }}
+                      onMouseMove={() => {
+                        setRunButtonContent("Run");
+                      }}
+                      onClick={() => {
+                        runCode();
+                      }}
+                      style={{
+                        width: "58px",
+                      }}
+                    >
+                      {runButtonContent}
+                    </Button>
+                  </Space>
+                </Row>
               </Col>
             </Row>
             <Row className="editor-body" style={boxStyle}>

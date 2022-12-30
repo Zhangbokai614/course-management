@@ -9,7 +9,7 @@ import { createBrowserRouter, Link } from "react-router-dom";
 
 import HomePage from "./pages/home";
 import CourseListPage from "./pages/course-list";
-import CoursePage, { loader as courseLoader } from "./pages/course";
+import CoursePage from "./pages/course";
 import CodeingPage from "./pages/codeing";
 import ArticlePage from "./pages/article";
 import ArticleListPage from "./pages/article-list";
@@ -25,30 +25,34 @@ const router = createBrowserRouter(
       errorElement: <ErrorPage />,
       children: [
         {
-          index: true,
-          element: <HomePage />,
-        },
-        {
-          path: "courseList",
-          element: <CourseListPage />,
-        },
-        {
-          path: "articleList",
-          element: <ArticleListPage />,
-        },
-        {
-          path: "codeing",
-          element: <CodeingPage />,
-        },
-        {
-          path: "course/:courseId",
-          element: <CoursePage />,
-          loader: courseLoader,
-        },
-        {
-          path: "article/:articleId",
-          element: <ArticlePage />,
-        },
+          errorElement: <ErrorPage />,
+          children: [
+            {
+              index: true,
+              element: <HomePage />,
+            },
+            {
+              path: "courseList",
+              element: <CourseListPage />,
+            },
+            {
+              path: "articleList",
+              element: <ArticleListPage />,
+            },
+            {
+              path: "codeing",
+              element: <CodeingPage />,
+            },
+            {
+              path: "course",
+              element: <CoursePage />,
+            },
+            {
+              path: "article",
+              element: <ArticlePage />,
+            },
+          ]
+        }
       ]
     },
     {
@@ -60,20 +64,20 @@ const router = createBrowserRouter(
 
 function getItem(label, key, icon, children) {
   return {
+    label,
     key,
     icon,
     children,
-    label,
   };
 }
 
 const menuItems = [
-  getItem(<Link to={'/'}>Home</Link>, "Home", <HomeOutlined />),
-  getItem(<Link to={'courseList'}>CourseList</Link>, "CourseList", <FormOutlined />),
-  getItem(<Link to={'articleList'}>ArticleList</Link>, "ArticleList", <ReadOutlined />),
-  getItem(<Link to={'codeing'}>Codeing</Link>, "Codeing", <CodeOutlined />),
-  getItem(<Link to={'article/tempArticleId'}>Article</Link>, "Article", <LineOutlined />),
-  getItem(<Link to={'course/tempCourseId'}>Course</Link>, "Course", <LineOutlined />),
+  getItem(<Link to={'/'}>Home</Link>, "/", <HomeOutlined />),
+  getItem(<Link to={'courseList'}>CourseList</Link>, "/courseList", <FormOutlined />),
+  getItem(<Link to={'articleList'}>ArticleList</Link>, "/articleList", <ReadOutlined />),
+  getItem(<Link to={'codeing'}>Codeing</Link>, "/codeing", <CodeOutlined />),
+  getItem(<Link to={"article/?articleId=1234"}>Article</Link>, "/article/", <LineOutlined />),
+  getItem(<Link to={"course/?courseId=123"}>Course</Link>, "/course/", <LineOutlined />),
 ];
 
 export { menuItems, router };
