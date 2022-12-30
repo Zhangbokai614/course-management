@@ -1,0 +1,5 @@
+.task-card {
+    width: calc(100% - 12px * 2);
+    margin: 0px 12px 24px 12px;
+    overflow: hidden;
+}

@@ -5,7 +5,7 @@ import "./index.css"
 
 const ArticlePage = () => {
   const { currentUser } = services.article
-  const [data, setData] = useState({ hits: "" })
+  const [data, setData] = useState("")
   useEffect(() => {
     const requestData = async () => {
       const { data } = await currentUser()

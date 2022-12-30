@@ -1,0 +1,47 @@
+.course-tab-control {
+    background-color: white;
+    width: 100%;
+    height: 200px;
+    padding-top: 48px;
+    margin-bottom: 24px;
+  }
+
+.course-tab-control-font-bold {
+    font-weight: bold;
+}
+
+.course-tab-control-space {
+    height: calc(200px - 48px * 2);
+}
+
+/* ------------------------------- */
+
+.learning-progress {
+    display: flex;
+    align-items: center;
+    width: calc(100% - 24px * 2);
+    height: 72px;
+    margin: 0px 24px 24px 24px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 4px;
+    overflow: hidden;
+    background:white;
+}
+
+.learning-progress-image {
+    width: 45px;
+}
+
+.learning-progress-aggregate-scheduling {
+    margin-left: 24px;
+}
+
+.learning-progress-start-time {
+    margin-left: 64px;
+}
+
+.learning-progress-date {
+    margin-left: 24px;
+    margin-right: 24px;
+}
