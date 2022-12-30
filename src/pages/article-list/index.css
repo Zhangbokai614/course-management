@@ -16,5 +16,33 @@
 
 .body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-item {
+  height: 24px;
+  line-height: 24px;
+  border-radius: 0;
+  margin: 0px 0px;
+  margin-bottom: 12px;
+  padding: 0px 4px;
+  border-radius: 4px;
+}
+
+#category-box {
   background-color: white;
+  flex-wrap: nowrap;
+  padding-top: 12px;
+  border-radius: 4px;
+}
+
+.show {
+  overflow: visible;
+  height: auto;
+}
+
+.hidden {
+  overflow: hidden;
+  height: 48px;
 }
