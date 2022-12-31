@@ -1,9 +1,8 @@
-import request from "umi-request"
+import request from "./config"
 
 export async function tabControl(options) {
   return request("/courseList/", {
     method: "GET",
-    prefix: "http://localhost:4000",
     ...(options || {}),
   })
 }
@@ -11,7 +10,6 @@ export async function tabControl(options) {
 export async function User(url, options) {
   return request("/courseList/" + url, {
     method: "GET",
-    prefix: "http://localhost:4000",
     ...(options || {}),
   })
 }
