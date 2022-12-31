@@ -3,6 +3,7 @@ const cors = require("cors")
 const path = require("path")
 const courseList = require("./course-list")
 const article = require("./article")
+const articleList = require("./article-list")
 const app = express()
 
 app.use(
@@ -18,6 +19,7 @@ app.use(express.static(path.join(__dirname, "./")))
 
 app.use("/courseList", courseList)
 app.use("/article", article)
+app.use("/article-list", articleList)
 
 app.listen(NODE_PORT, function () {
   console.log("mock service in " + NODE_PORT + " enabled on port!")
