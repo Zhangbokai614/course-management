@@ -8,4 +8,4 @@ const request = extend({
     },
 });
 
-export default {request}
+export default request
