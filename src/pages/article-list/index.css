@@ -14,12 +14,6 @@
   width: 100%;
 }
 
-.body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 .category-item {
   height: 24px;
   line-height: 24px;
@@ -35,14 +29,18 @@
   flex-wrap: nowrap;
   padding-top: 12px;
   border-radius: 4px;
+  user-select: none;
 }
 
 .show {
-  overflow: visible;
-  height: auto;
+  height: 72px;
+  transition: all 0.3s;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .hidden {
   overflow: hidden;
-  height: 48px;
+  height: 36px;
+  transition: all 0.3s;
 }
