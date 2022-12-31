@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/reset.css';
 import { theme, Col, Row, Typography, Space } from 'antd';
 import { InfoCircleOutlined, SendOutlined } from '@ant-design/icons';
+import { useNavigate } from "react-router-dom";
 
 import './index.css'
 import homeUp from '../../assets/img/home-up.png'
@@ -10,9 +11,21 @@ import homeMiddle from '../../assets/img/home-middle.png'
 const { useToken } = theme;
 const { Text, Paragraph, Link } = Typography;
 
-const HomePage = (props) => {
+const HomePage = () => {
   const { token } = useToken();
-  const changePage = props.changePage;
+  const navigate = useNavigate();
+
+  function gotoArticleList() {
+    navigate("/articleList", {
+      state: { userId: "123" },
+    });
+  }
+
+  function gotoCourseList() {
+    navigate("/courseList", {
+      state: { userId: "123" },
+    });
+  }
 
   let imgs = (() => {
     return [
@@ -36,15 +49,16 @@ const HomePage = (props) => {
               {
                 icon: <SendOutlined style={{ fontSize: token.fontSizeHeading3 }} />,
                 linkText: <Text className='link-text' style={{ color: token.colorPrimary, fontSize: token.fontSize }}>&nbsp;快速开始</Text>,
-                action: () => changePage("CourseList", {})
+                action: gotoArticleList
               },
               {
                 icon: <InfoCircleOutlined style={{ fontSize: token.fontSizeHeading3 }} />,
                 linkText: <Text className='link-text' style={{ color: token.colorPrimary, fontSize: token.fontSize }}>&nbsp;选择课程</Text>,
+                action: gotoCourseList
               },
             ].map(v => {
               return <Col>
-                <Link onClick={v.action} href="#" style={{ marginLeft: token.marginXL, display: 'flex' }}>
+                <Link onClick={v.action} style={{ marginLeft: token.marginXL, display: 'flex' }}>
                   {v.icon}
                   {v.linkText}
                 </Link>
