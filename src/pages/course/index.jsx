@@ -9,20 +9,48 @@ import {
   Input,
   Layout,
   Button,
+  Popover,
+  Dropdown,
+  message,
 } from "antd";
 import {
   ReloadOutlined,
   LeftOutlined,
   RightOutlined,
   CaretRightOutlined,
+  DownOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 import MonacoEditor from "react-monaco-editor/lib/editor";
-import { useLocation } from "react-router-dom";
+import { useLoaderData, useLocation } from "react-router-dom";
+import { useKeyPress } from "ahooks";
 import "antd/dist/reset.css";
 
 import languages from "./languages";
 import compare from "./compare";
 import "./index.css";
+
+export async function loader({ params }) {
+  // mock api
+  const result = {
+    example: [
+      {
+        title: "testing A",
+        code: "print('Hello world')",
+        text: "Good morning! Here's your coding interview problem for today.",
+        finish: true,
+      },
+      {
+        title: "testing B",
+        code: "let testing = 'Hello world'",
+        text: "What if, instead of being able to climb 1 or 2 steps at a time, you could climb any number from a set of positive integers X? For example, if X = {1, 3, 5}, you could climb 1, 3, or 5 steps at a time.",
+        finish: false,
+      },
+    ],
+    startExample: 2,
+  };
+  return result;
+}
 
 const defaultLanguages = languages[0].value;
 const { useToken } = theme;
@@ -33,13 +61,15 @@ const { Content, Sider } = Layout;
 const CoursePage = () => {
   const { token } = useToken();
   const location = useLocation();
+  const loaderData = useLoaderData();
+  const example = loaderData.example;
 
   console.log(location.state);
 
   const [collapsed, setCollapsed] = useState(false);
   const [language, setLanguage] = useState(defaultLanguages);
   const [currentCompares, setCurrentCompares] = useState(compare[language]);
-  const [currentExample, setCurrentExample] = useState(1);
+  const [currentExample, setCurrentExample] = useState(0);
   const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -54,7 +84,7 @@ const CoursePage = () => {
     setCurrentCompares(compare[value]);
   };
 
-  const onChange = (newValue) => {
+  const onChangeCode = (newValue) => {
     setCode(newValue);
   };
 
@@ -67,15 +97,31 @@ const CoursePage = () => {
 
   const editorDidMount = (editor) => {};
 
+  const changeExample = ({ key }) => {
+    setCurrentExample(+key);
+  };
+
+  const finish = () => {
+    // api
+    message.success("The current chapter is completed");
+    nextExample();
+  };
+
   const nextExample = () => {
-    setCurrentExample(currentExample + 1);
+    if (currentExample < example.length - 1) {
+      setCurrentExample(currentExample + 1);
+    }
   };
 
   const prevExample = () => {
-    if (currentExample > 1) {
+    if (currentExample > 0) {
       setCurrentExample(currentExample - 1);
     }
   };
+
+  useKeyPress(["alt.enter"], () => {
+    runCode();
+  });
 
   const padding = token.paddingXS;
   const margin = token.marginSM;
@@ -96,6 +142,14 @@ const CoursePage = () => {
     overviewRulerBorder: false,
     folding: true,
   };
+
+  const dropdownMenu = example.map((item, index) => {
+    return {
+      key: index + "",
+      label: <Text>{index + 1 + ". " + item.title}</Text>,
+    };
+  });
+  console.log(dropdownMenu);
 
   return (
     <Layout style={{ margin: margin, borderRadius: borderRadius, padding: 0 }}>
@@ -120,7 +174,7 @@ const CoursePage = () => {
           marginRight: "26px",
         }}
         theme="light"
-        width="18vw"
+        width="22vw"
         style={{
           backgroundColor: token.colorBgLayout,
           borderRadius: borderRadius,
@@ -144,29 +198,81 @@ const CoursePage = () => {
           </Col>
           <Col span={12}>
             <Row justify="end">
-              <Space align="center" size={6}>
-                <Button
-                  size="small"
-                  onClick={() => {
-                    prevExample();
-                  }}
-                >
-                  <LeftOutlined />
-                </Button>
-                <Text type="secondary" wrap={false}>{currentExample}</Text>
-                <Button
-                  size="small"
-                  onClick={() => {
-                    nextExample();
-                  }}
-                >
-                  <RightOutlined />
-                </Button>
-              </Space>
+              <Dropdown
+                arrow={true}
+                menu={{
+                  items: dropdownMenu,
+                  onClick: changeExample,
+                  selectable: true,
+                }}
+              >
+                <Space>
+                  <Text ellipsis type="secondary">
+                    {example[currentExample].title}
+                  </Text>
+                  <DownOutlined />
+                </Space>
+              </Dropdown>
             </Row>
           </Col>
         </Row>
-        <Row className="editor-body" style={boxStyle}></Row>
+        <Row className="editor-body" justify="space-between" style={boxStyle}>
+          <MonacoEditor
+            className="monaco-editor"
+            width="100%"
+            height="40%"
+            language={language}
+            value={example[currentExample].code}
+            options={{
+              readOnly: true,
+              overviewRulerBorder: false,
+              minimap: { enabled: false },
+            }}
+            theme="vs-light"
+          />
+          <Col>{example[currentExample].text}</Col>
+          <Row
+            style={{ width: "100%", alignItems: "flex-end" }}
+            justify="space-between"
+            align="middle"
+          >
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                prevExample();
+              }}
+            >
+              <LeftOutlined />
+            </Button>
+            <Text type="secondary" wrap={false}>
+              {currentExample + 1} / {example.length}
+            </Text>
+            <Space justify="end">
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => {
+                  nextExample();
+                }}
+              >
+                <RightOutlined />
+              </Button>
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => {
+                  finish();
+                }}
+                style={{
+                  backgroundColor: token.colorSuccess,
+                }}
+              >
+                <CheckOutlined />
+              </Button>
+            </Space>
+          </Row>
+        </Row>
       </Sider>
       <Content>
         <Row
@@ -208,23 +314,25 @@ const CoursePage = () => {
                       onChange={selectHandleChange}
                       options={languages}
                     />
-                    <Button
-                      type="primary"
-                      onMouseLeave={() => {
-                        setRunButtonContent(<CaretRightOutlined />);
-                      }}
-                      onMouseMove={() => {
-                        setRunButtonContent("Run");
-                      }}
-                      onClick={() => {
-                        runCode();
-                      }}
-                      style={{
-                        width: "58px",
-                      }}
-                    >
-                      {runButtonContent}
-                    </Button>
+                    <Popover content={"Alt + Enter"}>
+                      <Button
+                        type="primary"
+                        onMouseLeave={() => {
+                          setRunButtonContent(<CaretRightOutlined />);
+                        }}
+                        onMouseMove={() => {
+                          setRunButtonContent("Run");
+                        }}
+                        onClick={() => {
+                          runCode();
+                        }}
+                        style={{
+                          width: "58px",
+                        }}
+                      >
+                        {runButtonContent}
+                      </Button>
+                    </Popover>
                   </Space>
                 </Row>
               </Col>
@@ -236,7 +344,7 @@ const CoursePage = () => {
                 language={language}
                 value=""
                 options={monacoOptions}
-                onChange={onChange}
+                onChange={onChangeCode}
                 editorDidMount={(editor) => editorDidMount(editor)}
                 theme="vs-light"
               />
