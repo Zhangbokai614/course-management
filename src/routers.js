@@ -9,7 +9,7 @@ import { createBrowserRouter, Link } from "react-router-dom";
 
 import HomePage from "./pages/home";
 import CourseListPage from "./pages/course-list";
-import CoursePage from "./pages/course";
+import CoursePage, {loader as courseLoader} from "./pages/course";
 import CodeingPage from "./pages/codeing";
 import ArticlePage from "./pages/article";
 import ArticleListPage from "./pages/article-list";
@@ -46,6 +46,7 @@ const router = createBrowserRouter(
             {
               path: "course",
               element: <CoursePage />,
+              loader: courseLoader,
             },
             {
               path: "article",
