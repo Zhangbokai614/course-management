@@ -6,7 +6,8 @@
     "build": "craco build",
     "eject": "react-scripts eject",
     "start": "craco start",
-    "test": "craco test"
+    "test": "craco test",
+    "mock": "cd mock && node index.js"
   },
   "browserslist": {
     "production": [
