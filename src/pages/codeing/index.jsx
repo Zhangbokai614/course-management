@@ -28,9 +28,9 @@ const CodeingPage = () => {
   const navigate = useNavigate();
 
   const goTo = () => {
-    navigate("/course/", {
-      state: { userId: "123" },
-      replace: true,
+    // temp entrance
+    navigate("/course/javascript/614525", {
+      state: { startExample: 1 },
     });
   };
 
@@ -61,9 +61,7 @@ const CodeingPage = () => {
     setInfo(result.info);
   };
 
-  const editorDidMount = (editor) => {
-    console.log(editor);
-  };
+  const editorDidMount = (editor) => {};
 
   const padding = token.paddingXS;
   const margin = token.marginSM;

@@ -24,6 +24,7 @@ import {
 import MonacoEditor from "react-monaco-editor/lib/editor";
 import { useLoaderData, useLocation } from "react-router-dom";
 import { useKeyPress } from "ahooks";
+import { getCourseByLanguage } from "../../services/course.js";
 import "antd/dist/reset.css";
 
 import languages from "./languages";
@@ -31,25 +32,13 @@ import compare from "./compare";
 import "./index.css";
 
 export async function loader({ params }) {
-  // mock api
-  const result = {
-    example: [
-      {
-        title: "testing A",
-        code: "print('Hello world')",
-        text: "Good morning! Here's your coding interview problem for today.",
-        finish: true,
-      },
-      {
-        title: "testing B",
-        code: "let testing = 'Hello world'",
-        text: "What if, instead of being able to climb 1 or 2 steps at a time, you could climb any number from a set of positive integers X? For example, if X = {1, 3, 5}, you could climb 1, 3, or 5 steps at a time.",
-        finish: false,
-      },
-    ],
-    startExample: 2,
+  let examples = await getCourseByLanguage(params.language, params.courseId);
+
+  const loadData = {
+    example: examples.data,
   };
-  return result;
+
+  return loadData;
 }
 
 const defaultLanguages = languages[0].value;
@@ -64,12 +53,12 @@ const CoursePage = () => {
   const loaderData = useLoaderData();
   const example = loaderData.example;
 
-  console.log(location.state);
-
   const [collapsed, setCollapsed] = useState(false);
   const [language, setLanguage] = useState(defaultLanguages);
   const [currentCompares, setCurrentCompares] = useState(compare[language]);
-  const [currentExample, setCurrentExample] = useState(0);
+  const [currentExample, setCurrentExample] = useState(
+    location.state.startExample || 0
+  );
   const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -149,7 +138,6 @@ const CoursePage = () => {
       label: <Text>{index + 1 + ". " + item.title}</Text>,
     };
   });
-  console.log(dropdownMenu);
 
   return (
     <Layout style={{ margin: margin, borderRadius: borderRadius, padding: 0 }}>

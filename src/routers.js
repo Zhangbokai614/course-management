@@ -44,7 +44,7 @@ const router = createBrowserRouter(
               element: <CodeingPage />,
             },
             {
-              path: "course",
+              path: "course/:language/:courseId",
               element: <CoursePage />,
               loader: courseLoader,
             },
@@ -77,8 +77,7 @@ const menuItems = [
   getItem(<Link to={'courseList'}>CourseList</Link>, "/courseList", <FormOutlined />),
   getItem(<Link to={'articleList'}>ArticleList</Link>, "/articleList", <ReadOutlined />),
   getItem(<Link to={'codeing'}>Codeing</Link>, "/codeing", <CodeOutlined />),
-  getItem(<Link to={"article/?articleId=1234"}>Article</Link>, "/article/", <LineOutlined />),
-  getItem(<Link to={"course/?courseId=123"}>Course</Link>, "/course/", <LineOutlined />),
+  getItem(<Link to={"article"}>Article</Link>, "/article/", <LineOutlined />),
 ];
 
 export { menuItems, router };
