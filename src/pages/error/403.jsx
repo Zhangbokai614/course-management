@@ -1,11 +1,30 @@
 import React from "react";
 import { Button, Result } from "antd";
-const NotAuthorizedAccessPage = () => (
-  <Result
-    status="403"
-    title="403"
-    subTitle="Sorry, you are not authorized to access this page."
-    extra={<Button type="primary">Back Home</Button>}
-  />
-);
+import { useNavigate } from "react-router-dom";
+
+const NotAuthorizedAccessPage = () => {
+  const navigate = useNavigate();
+
+  const goTo = () => {
+    navigate("/", { replace: true });
+  };
+
+  return (
+    <Result
+      status="403"
+      title="403"
+      subTitle="Sorry, you are not authorized to access this page."
+      extra={
+        <Button
+          type="primary"
+          onClick={() => {
+            goTo();
+          }}
+        >
+          Back Home
+        </Button>
+      }
+    />
+  );
+};
 export default NotAuthorizedAccessPage;
