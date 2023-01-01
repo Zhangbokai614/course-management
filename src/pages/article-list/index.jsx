@@ -1,53 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { theme, Row, Col, Space, Typography, Tag, Card, List } from 'antd';
-import { useLocation } from 'react-router-dom';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 
+import services from '../../services';
 import './index.css';
+import { async } from 'q';
 
 const { useToken } = theme;
 const { Text, Link } = Typography;
 const { CheckableTag } = Tag;
+const { articleList } = services.articleList;
+const dataType = {
+  category: "category",
+  article: "articles",
+}
 
 const ArticleListPage = (props) => {
   const { token } = useToken();
-  const location = useLocation();
+
+  const [categorysLabel, setCategoryLabel] = useState([]);
+  const [currentCategoryLabelIdx, setCurrentCategoryLabelIdx] = useState(0);
   const [categoryBox, setCategoryBox] = useState('hidden');
-  const [currentCategoryItemIdx, setCurrentCategoryItemIdx] = useState(0);
 
-  let categorys = [
-    '类目零',
-    '类目一',
-    '类目二',
-    '类目三',
-    '类目四',
-    '类目五',
-    '类目六',
-    '类目七',
-    '类目八',
-    '类目九',
-    '类目十',
-    '类目十一',
-    '类目十二',
-    '类目十三',
-    '类目十四',
-    '类目十五',
-    '类目十六',
-    '类目十七',
-    '类目十八',
-    '类目十九',
-    '类目二十',
-
-    '类目二十一',
-    '类目二十二',
-    '类目二十三',
-    '类目二十三',
-  ];
+  useEffect(() => {
+    const requestData = async () => {
+      const { data } = await articleList({ type: dataType.category })
+      setCategoryLabel(data)
+    }
+    requestData()
+  }, [])
 
   function changeCategoryItemState(newCategoryItemIdx) {
-    if (currentCategoryItemIdx !== newCategoryItemIdx) {
-      setCurrentCategoryItemIdx(newCategoryItemIdx);
+    if (currentCategoryLabelIdx !== newCategoryItemIdx) {
+      setCurrentCategoryLabelIdx(newCategoryItemIdx);
       console.log(newCategoryItemIdx);
     }
   }
@@ -77,18 +63,18 @@ const ArticleListPage = (props) => {
               <Col>
                 <CheckableTag
                   className='category-item'
-                  checked={-1 === currentCategoryItemIdx ? true : false}
+                  checked={-1 === currentCategoryLabelIdx ? true : false}
                   onChange={() => changeCategoryItemState(-1)}
                   style={{ fontSize: token.fontSize }}>
-                  {'全部'}
+                  {'all'}
                 </CheckableTag>
               </Col>
               {
-                categorys.map((categoryItem, idx) => {
+                categorysLabel.map((categoryItem, idx) => {
                   return <Col>
                     <CheckableTag
                       className='category-item'
-                      checked={idx === currentCategoryItemIdx ? true : false}
+                      checked={idx === currentCategoryLabelIdx ? true : false}
                       onChange={() => changeCategoryItemState(idx)}
                       style={{ fontSize: token.fontSize }}>
                       {categoryItem}
@@ -106,7 +92,7 @@ const ArticleListPage = (props) => {
             </Link>
           </Col>
         </Row>
-      </Col >
+      </Col>
       <Col id='content-box' style={{
         backgroundColor: 'white',
         height:
