@@ -51,10 +51,10 @@ const ArticleListPage = (props) => {
 
   useEffect(() => {
     window.addEventListener('resize', () => { setScreenHeight(window.innerHeight) });
-    document.getElementById("box").addEventListener("transitionend", (ele) => {
-      if (ele.propertyName === "height") {
-        let e = document.getElementById("box");
-        setCategoryBoxScroll(e.getAttribute("scroll") === "false" ? "true" : "false");
+    document.getElementById('box').addEventListener('transitionend', (ele) => {
+      if (ele.propertyName === 'height') {
+        let e = document.getElementById('box');
+        setCategoryBoxScroll(e.getAttribute('scroll') === 'false' ? 'true' : 'false');
       }
     });
 
@@ -67,16 +67,16 @@ const ArticleListPage = (props) => {
 
   useEffect(() => {
     changeContentBoxHeight();
-    if (categoryBox === "hidden") {
-      let e = document.getElementById("box");
-      e.style.overflowY = "hidden";
+    if (categoryBox === 'hidden') {
+      let e = document.getElementById('box');
+      e.style.overflowY = 'hidden';
     }
   }, [screenHeight, categoryBox])
 
   useEffect(() => {
     if (categoryBoxScroll === 'true') {
-      let e = document.getElementById("box");
-      e.style.overflowY = "auto";
+      let e = document.getElementById('box');
+      e.style.overflowY = 'auto';
     }
   }, [categoryBoxScroll]);
 
@@ -89,7 +89,7 @@ const ArticleListPage = (props) => {
         </Space>
       </Col>
       <Col style={{ margin: token.marginLG }}>
-        <Row id='category-box' >
+        <Row id='category-box'>
           <Col style={{ marginLeft: token.marginXXL, whiteSpace: 'nowrap', lineHeight: `${token.fontSizeHeading3}px` }}>类目名称:</Col>
           <Col id='box' className={categoryBox === 'hidden' ? 'hidden' : 'show'} scroll={categoryBoxScroll} style={{ marginLeft: token.marginXL, marginRight: token.marginXL, flex: 1 }}>
             <Row gutter={[12, 0]}>

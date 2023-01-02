@@ -2,11 +2,12 @@ import React from 'react';
 import 'antd/dist/reset.css';
 import { theme, Col, Row, Typography, Space } from 'antd';
 import { InfoCircleOutlined, SendOutlined } from '@ant-design/icons';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import './index.css'
 import homeUp from '../../assets/img/home-up.png'
 import homeMiddle from '../../assets/img/home-middle.png'
+import homeDown from '../../assets/img/home-down.png'
 
 const { useToken } = theme;
 const { Text, Paragraph, Link } = Typography;
@@ -16,14 +17,14 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   function gotoArticleList() {
-    navigate("/articleList", {
-      state: { userId: "123" },
+    navigate('/articleList', {
+      state: { userId: '123' },
     });
   }
 
   function gotoCourseList() {
-    navigate("/courseList", {
-      state: { userId: "123" },
+    navigate('/courseList', {
+      state: { userId: '123' },
     });
   }
 
@@ -31,7 +32,7 @@ const HomePage = () => {
     return [
       homeUp,
       homeMiddle,
-      homeMiddle
+      homeDown
     ];
   })()
 
@@ -69,12 +70,12 @@ const HomePage = () => {
       </Paragraph>
 
       <Row style={{ marginTop: token.marginLG, paddingLeft: token.paddingLG, paddingRight: token.paddingLG }}>
-        <Col flex="auto">
+        <Col flex='auto'>
           {
             imgs.map((v, i) => {
               return i !== 0 ? <Row style={{ marginBottom: token.margin }}>
-                <Col flex="100%">
-                  <img src={v} alt='' style={{ width: "100%" }} />
+                <Col flex='100%'>
+                  <img src={v} alt='' style={{ width: '100%' }} />
                 </Col>
               </Row> : undefined;
             })
