@@ -43,3 +43,13 @@
   height: 36px;
   transition: all 0.3s;
 }
+
+.show::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.show::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.65);
+}
