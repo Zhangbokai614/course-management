@@ -35,7 +35,6 @@
 .show {
   height: 72px;
   transition: all 0.3s;
-  overflow-y: auto;
   overflow-x: hidden;
 }
 
