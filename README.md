@@ -1,3 +1,7 @@
+![image](https://github.com/Zhangbokai614/course-management/assets/64344118/286fa700-cec6-45b7-b4f8-01d3f2ab4a42)
+
+![image](https://github.com/Zhangbokai614/course-management/assets/64344118/6dbfe58c-0201-409a-8da8-647d0a63f761)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
